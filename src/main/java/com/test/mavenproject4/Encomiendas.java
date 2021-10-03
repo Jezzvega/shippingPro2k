@@ -10,7 +10,8 @@ package com.test.mavenproject4;
  * @author jezzvega
  */
 public class Encomiendas {
-  /*tis an indent file*/  
+  /*tis an indent file*/
+    /*esta es otra prueba*/
     private int id;
     private String envia;
     private String recibe;
