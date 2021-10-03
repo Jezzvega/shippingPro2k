@@ -41,7 +41,10 @@ public class View extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
 
+        jTable1.setBackground(new java.awt.Color(204, 255, 255));
+        jTable1.setBorder(javax.swing.BorderFactory.createLineBorder(null));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
