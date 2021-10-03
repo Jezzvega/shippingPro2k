@@ -146,7 +146,7 @@ public class View extends javax.swing.JFrame {
                     int index = 0;
                     
                     //test
-                    /*
+                    //Commets
                     for(Encomiendas encomienda : encomiendas){
                         
                         jTable1.getModel().setValueAt(encomienda.getId(), index, 0);
@@ -157,7 +157,7 @@ public class View extends javax.swing.JFrame {
                         jTable1.getModel().setValueAt(encomienda.getDescripcion(), index, 5);
                         
                         index++;
-                    }*/
+                    }
                     
                 }).join();
     }//GEN-LAST:event_jButton1ActionPerformed
