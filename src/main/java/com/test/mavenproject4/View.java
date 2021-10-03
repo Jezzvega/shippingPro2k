@@ -3,6 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+//eD
 package com.test.mavenproject4;
 
 import com.google.gson.Gson;
@@ -146,7 +147,7 @@ public class View extends javax.swing.JFrame {
                     int index = 0;
                     
                     //test
-                    //CommetsEdwin
+                    
                     for(Encomiendas encomienda : encomiendas){
                         
                         jTable1.getModel().setValueAt(encomienda.getId(), index, 0);
