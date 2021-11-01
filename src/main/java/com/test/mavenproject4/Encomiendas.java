@@ -94,8 +94,6 @@ public class Encomiendas {
         this.descripcion = descripcion;
     }
     
-    
-    
     public String getPrioridadText(){
         return ((this.prioridad == 0) ? "Baja" : "Alta");
     }

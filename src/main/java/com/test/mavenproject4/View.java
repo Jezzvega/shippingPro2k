@@ -126,40 +126,47 @@ public class View extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+
+        new Thread(){
+            @Override
+            public void run() {
+                
+                var client = HttpClient.newHttpClient();
+                var request = HttpRequest
+                        .newBuilder(URI.create("https://t-express-rest.herokuapp.com/encomiendas/"))
+                        .header("Content-Type", "application/json")
+                        .build();
+                
+                client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .thenAccept(res -> {
+
+                        List<Encomiendas> encomiendas = new Gson()
+                                .fromJson(res, new TypeToken<List<Encomiendas>>() {}.getType());
+
+                        int index = 0;
+
+                        for(Encomiendas encomienda : encomiendas){
+
+                            jTable1.getModel().setValueAt(encomienda.getId(), index, 0);
+                            jTable1.getModel().setValueAt(encomienda.getEnvia(), index, 1);
+                            jTable1.getModel().setValueAt(encomienda.getRecibe(), index, 2);
+                            jTable1.getModel().setValueAt(encomienda.getPrioridadText(), index, 3);
+                            jTable1.getModel().setValueAt(encomienda.getFecha_entrada(), index, 4);
+                            jTable1.getModel().setValueAt(encomienda.getDescripcion(), index, 5);
+
+                            index++;
+                        }
+
+                    }).join();
+                
+            }
+        }.start();
         
-        var client = HttpClient.newHttpClient();
-        var request = HttpRequest
-                .newBuilder(URI.create("https://t-express-rest.herokuapp.com/encomiendas/"))
-                .header("Content-Type", "application/json")
-                .build();
-        
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(res -> {
-                    
-                    List<Encomiendas> encomiendas = new Gson()
-                            .fromJson(res, new TypeToken<List<Encomiendas>>() {}.getType());
-                    
-                    int index = 0;
-                    
-                    //test
-                    
-                    for(Encomiendas encomienda : encomiendas){
-                        
-                        jTable1.getModel().setValueAt(encomienda.getId(), index, 0);
-                        jTable1.getModel().setValueAt(encomienda.getEnvia(), index, 1);
-                        jTable1.getModel().setValueAt(encomienda.getRecibe(), index, 2);
-                        jTable1.getModel().setValueAt(encomienda.getPrioridadText(), index, 3);
-                        jTable1.getModel().setValueAt(encomienda.getFecha_entrada(), index, 4);
-                        jTable1.getModel().setValueAt(encomienda.getDescripcion(), index, 5);
-                        
-                        index++;
-                    }
-                    
-                }).join();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
