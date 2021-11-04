@@ -331,8 +331,7 @@ public class AgregarCliente extends javax.swing.JFrame {
         RequestBody body = RequestBody.create(JSON, json);
         
         Request request = new Request.Builder()
-            .url("http://localhost:3000/clientes/agregar")
-            //.url("https://t-express-rest.herokuapp.com/clientes/agregar")
+            .url("https://t-express-rest.herokuapp.com/clientes/agregar")
             .header("auth-token", user.getToken())
             .post(body)
             .build();

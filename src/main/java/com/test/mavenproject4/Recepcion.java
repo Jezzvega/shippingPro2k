@@ -8,9 +8,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
-import javax.swing.JToggleButton;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -191,7 +189,7 @@ public class Recepcion extends javax.swing.JFrame {
 
         jLabel9.setText("Peso (lb):");
 
-        jLabel10.setText("Descripción:");
+        jLabel10.setText("Descripción del Paquete:");
 
         descPaqueteTxt.setColumns(20);
         descPaqueteTxt.setLineWrap(true);
@@ -231,7 +229,6 @@ public class Recepcion extends javax.swing.JFrame {
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10)
                             .addComponent(altaPriorCheck)
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addContainerGap()
@@ -249,21 +246,26 @@ public class Recepcion extends javax.swing.JFrame {
                             .addComponent(totalCostoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(calcTotalCost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel10)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel12)
-                    .addComponent(distTxt)
-                    .addComponent(calcTotalCost))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(calcTotalCost, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel12)
+                        .addComponent(distTxt)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -280,6 +282,7 @@ public class Recepcion extends javax.swing.JFrame {
 
         jButton1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
         jButton1.setText("Enviar Encomienda");
+        jButton1.setEnabled(false);
 
         addClienteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_add_black_24dp.png"))); // NOI18N
         addClienteBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -412,8 +415,8 @@ public class Recepcion extends javax.swing.JFrame {
             
         }
         
-        costo += distancia * 0.40;
-        costo += Double.parseDouble(peso) * 0.75;
+        costo += distancia * 0.35;
+        costo += Double.parseDouble(peso) * 0.45;
         
         if(altaPriorCheck.isSelected()){
             costo += 10.00;
