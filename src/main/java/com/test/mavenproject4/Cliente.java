@@ -10,19 +10,23 @@ package com.test.mavenproject4;
  */
 public class Cliente {
     
-    private int id;
+    private String id;
     private String nombre;
     private String ubicacion_desc;
     private String telefono;
+    private String ubic_prov;
+    private Double ubic_lat;
+    private Double ubic_long;
+    private String descripcion;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-
+    
     public String getNombre() {
         return nombre;
     }
@@ -45,6 +49,38 @@ public class Cliente {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public String getUbic_prov() {
+        return ubic_prov;
+    }
+
+    public void setUbic_prov(String ubic_prov) {
+        this.ubic_prov = ubic_prov;
+    }
+
+    public Double getUbic_lat() {
+        return ubic_lat;
+    }
+
+    public void setUbic_lat(Double ubic_lat) {
+        this.ubic_lat = ubic_lat;
+    }
+
+    public Double getUbic_long() {
+        return ubic_long;
+    }
+
+    public void setUbic_long(Double ubic_long) {
+        this.ubic_long = ubic_long;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
     
     
