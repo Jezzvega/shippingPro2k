@@ -78,7 +78,7 @@ public class Autenticacion extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\Darki\\OneDrive\\Documents\\logo.jpg")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.jpg"))); // NOI18N
 
         accederBtn.setText("Acceder");
         accederBtn.addActionListener(new java.awt.event.ActionListener() {
