@@ -441,7 +441,7 @@ public class AgregarCliente extends javax.swing.JFrame {
         mapFrame.add(view);
         // Load the required web page.
         
-        browser.navigation().loadUrl(getClass().getResource("/index.html").getPath());
+        browser.navigation().loadUrl(getClass().getResource("/index.html").getPath().replaceFirst("^/", ""));
         
         browser.navigation().on(LoadFinished.class, event -> {
         
