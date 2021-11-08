@@ -7,9 +7,11 @@ package com.test.mavenproject4;
 import com.google.gson.Gson;
 import static com.test.mavenproject4.AuthHttpClient.JSON;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -56,7 +58,11 @@ public class Autenticacion extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Inicio de Sesión-Shipping Pro 2k");
         setBackground(Color.WHITE);
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setName(""); // NOI18N
+        setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
         getContentPane().add(mailTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, 265, -1));
 
@@ -77,6 +83,7 @@ public class Autenticacion extends javax.swing.JFrame {
         pBar.setVisible(false);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setName(""); // NOI18N
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.jpg"))); // NOI18N
 
@@ -166,13 +173,16 @@ public class Autenticacion extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 400));
 
+        getAccessibleContext().setAccessibleDescription("");
+
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void accederBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accederBtnActionPerformed
-      
+
         try {
+               
             login(mailTxt.getText(), passTxt.getText());
             
         } catch (Exception ex) {
@@ -188,9 +198,12 @@ public class Autenticacion extends javax.swing.JFrame {
     public void login(String mail, String pass) throws Exception {
         
         errorTxt.setText(null);
+       
+        jPanel1.setCursor(Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
         accederBtn.setEnabled(false);
         pBar.setVisible(true);
-        
+       
+     
         String json = "{\"correo\": \""+ mail +"\",\"pass\": \"" + pass + "\"}";
 
         RequestBody body = RequestBody.create(JSON, json);
@@ -212,6 +225,7 @@ public class Autenticacion extends javax.swing.JFrame {
                     errorTxt.setText(res.body().string());
                     accederBtn.setEnabled(true);
                     pBar.setVisible(false);
+                   jPanel1.setCursor(Cursor.getPredefinedCursor( Cursor.DEFAULT_CURSOR ) );
                     return;
                 }
                 
