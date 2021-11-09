@@ -82,6 +82,7 @@ public class Recepcion extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
+        setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Helvetica", 1, 24)); // NOI18N
         jLabel1.setText("Recepción de Encomiendas");
@@ -92,14 +93,12 @@ public class Recepcion extends javax.swing.JFrame {
 
         clientIdTxt.setToolTipText("");
 
-        buscarClienteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_search_black_24dp.png"))); // NOI18N
         buscarClienteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarClienteBtnActionPerformed(evt);
             }
         });
 
-        verClienteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_visibility_black_24dp.png"))); // NOI18N
         verClienteBtn.setEnabled(false);
         verClienteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -140,14 +139,12 @@ public class Recepcion extends javax.swing.JFrame {
 
         clientIdRecTxt.setToolTipText("");
 
-        buscarClienteRecBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_search_black_24dp.png"))); // NOI18N
         buscarClienteRecBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarClienteRecBtnActionPerformed(evt);
             }
         });
 
-        verClienteRecBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_visibility_black_24dp.png"))); // NOI18N
         verClienteRecBtn.setEnabled(false);
         verClienteRecBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -284,7 +281,6 @@ public class Recepcion extends javax.swing.JFrame {
         jButton1.setText("Enviar Encomienda");
         jButton1.setEnabled(false);
 
-        addClienteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_add_black_24dp.png"))); // NOI18N
         addClienteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addClienteBtnActionPerformed(evt);
