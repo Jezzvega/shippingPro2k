@@ -82,7 +82,7 @@ public class AgregarCliente extends javax.swing.JFrame {
         guardarClienteBtn = new javax.swing.JButton();
         errLb = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -441,7 +441,7 @@ public class AgregarCliente extends javax.swing.JFrame {
         mapFrame.add(view);
         // Load the required web page.
         
-        browser.navigation().loadUrl(getClass().getResource("/index.html").getPath().replaceFirst("^/", ""));
+        browser.navigation().loadUrl(getClass().getResource("/index.html").getPath().replaceFirst("^/[cC]", ""));
         
         browser.navigation().on(LoadFinished.class, event -> {
         

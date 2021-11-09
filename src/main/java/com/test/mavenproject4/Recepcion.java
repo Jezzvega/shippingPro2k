@@ -5,6 +5,7 @@
 package com.test.mavenproject4;
 
 import com.google.gson.Gson;
+import static com.test.mavenproject4.AgregarCliente.JSON;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -77,7 +79,7 @@ public class Recepcion extends javax.swing.JFrame {
         distTxt = new javax.swing.JLabel();
         totalCostoTxt = new javax.swing.JLabel();
         calcTotalCost = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        enviarEncomiendaBtn = new javax.swing.JButton();
         addClienteBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -280,9 +282,14 @@ public class Recepcion extends javax.swing.JFrame {
                             .addComponent(pesoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
         );
 
-        jButton1.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
-        jButton1.setText("Enviar Encomienda");
-        jButton1.setEnabled(false);
+        enviarEncomiendaBtn.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
+        enviarEncomiendaBtn.setText("Registrar Encomienda");
+        enviarEncomiendaBtn.setEnabled(false);
+        enviarEncomiendaBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enviarEncomiendaBtnActionPerformed(evt);
+            }
+        });
 
         addClienteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_add_black_24dp.png"))); // NOI18N
         addClienteBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -305,7 +312,7 @@ public class Recepcion extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addClienteBtn))
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(enviarEncomiendaBtn, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -325,7 +332,7 @@ public class Recepcion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(enviarEncomiendaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -334,7 +341,7 @@ public class Recepcion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarClienteBtnActionPerformed
-        
+
         String clientId = clientIdTxt.getText();
         
         buscarClienteBtn.setEnabled(false);
@@ -399,10 +406,10 @@ public class Recepcion extends javax.swing.JFrame {
 
     private void calcTotalCostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcTotalCostActionPerformed
         
-        double costo = 0.00;
+        costoTotal = 0.00;
         String peso = pesoTxt.getText();
         
-        if(peso.isBlank() || Double.parseDouble(peso) < 0.00){
+        if(peso.isBlank() || Double.parseDouble(peso) <= 0.00){
             
             JOptionPane.showMessageDialog(
                                 null,
@@ -415,18 +422,113 @@ public class Recepcion extends javax.swing.JFrame {
             
         }
         
-        costo += distancia * 0.35;
-        costo += Double.parseDouble(peso) * 0.45;
+        costoTotal += distancia * 0.35;
+        costoTotal += Double.parseDouble(peso) * 0.45;
         
         if(altaPriorCheck.isSelected()){
-            costo += 10.00;
+            costoTotal += 10.00;
         }
         
-        totalCostoTxt.setText(String.format("$%.2f", costo));
+        totalCostoTxt.setText(String.format("$%.2f", costoTotal));
+        
+        if(costoTotal > 0) enviarEncomiendaBtn.setEnabled(true);
         
     }//GEN-LAST:event_calcTotalCostActionPerformed
 
+    private void enviarEncomiendaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarEncomiendaBtnActionPerformed
+        
+        String descPaquete = descPaqueteTxt.getText();
+        double peso = Double.parseDouble(pesoTxt.getText());
+        
+        if(descPaquete.isBlank()){
+            JOptionPane.showMessageDialog(
+                                null,
+                                "Debe introducir una descripcion del paquete.", 
+                                "Ha ocurrido un problema",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+            
+            return;
+        }
+        
+        enviarEncomiendaBtn.setEnabled(false);
+        
+        String json = "{\n" +
+                        "    \"envia\": \"" + clienteEnv.getId() + "\",\n" +
+                        "    \"recibe\": \"" + clienteRec.getId() + "\",\n" +
+                        "    \"prioridad\": " + (altaPriorCheck.isSelected() ? 1 : 0) + ",\n" +
+                        "    \"peso\": " + peso + ",\n" +
+                        "    \"costo\": " + costoTotal + ",\n" +
+                        "    \"descripcion\": \"" + descPaquete + "\"\n" +
+                        "}";
+        
+        RequestBody body = RequestBody.create(JSON, json);
+        
+        Request request = new Request.Builder()
+            .url("https://t-express-rest.herokuapp.com/encomiendas/agregar")
+            .header("auth-token", user.getToken())
+            .post(body)
+            .build();
+        
+        client.newCall(request).enqueue(new Callback(){
+            @Override
+            public void onFailure(Call call, IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response res) throws IOException {
+                
+                Object[] options = {"OK"};
+                
+                if(!res.isSuccessful()){
+                    
+                    JOptionPane.showOptionDialog(
+                                null,
+                                res.body().string(), 
+                                "Ha ocurrido un problema",
+                                JOptionPane.OK_OPTION,
+                                JOptionPane.ERROR_MESSAGE,
+                                null, options, options[0]
+                            );
+                    
+                    enviarEncomiendaBtn.setEnabled(true);
+                    return;
+                }
+                
+                enviarEncomiendaBtn.setEnabled(true);
+                
+                int dialogRes = JOptionPane.showOptionDialog(
+                                null,
+                                "La encomienda se ha guardado correctamente!", 
+                                "Encomienda Guardada",
+                                JOptionPane.OK_OPTION,
+                                JOptionPane.INFORMATION_MESSAGE,
+                                null, options, options[0]
+                        );
+                
+                if(dialogRes == JOptionPane.OK_OPTION){
+                    //se limpian todos lo campos
+                    
+                }
+                
+            }
+            
+        });
+        
+    }//GEN-LAST:event_enviarEncomiendaBtnActionPerformed
+
     public void buscarCliente(String id, String tipo) throws Exception {
+        
+        if(id.isBlank()) {
+            JOptionPane.showMessageDialog(
+                                null,
+                                "Debe introducir el " + (tipo.equals("Env") ? "Emisor" : "Receptor"), 
+                                "Ha ocurrido un problema",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+            return;
+        }
         
         Request request = new Request.Builder()
                 .url("https://t-express-rest.herokuapp.com/clientes/" + id)
@@ -457,6 +559,8 @@ public class Recepcion extends javax.swing.JFrame {
                         buscarClienteBtn.setEnabled(true);
                         buscarClienteRecBtn.setEnabled(true);
                         
+                        responseBody.close();
+                        
                         return;
                         
                     }
@@ -467,6 +571,9 @@ public class Recepcion extends javax.swing.JFrame {
                         buscarClienteBtn.setEnabled(true);
 
                         verClienteBtn.setEnabled(true);
+                        
+                        responseBody.close();
+                        
                     }else{
                         clienteRec = new Gson().fromJson(json, Cliente.class);
                         
@@ -478,6 +585,8 @@ public class Recepcion extends javax.swing.JFrame {
                         buscarClienteRecBtn.setEnabled(true);
 
                         verClienteRecBtn.setEnabled(true);
+                        
+                        responseBody.close();
                     }
                 }
             }
@@ -486,7 +595,7 @@ public class Recepcion extends javax.swing.JFrame {
         
     }
     
-    private void limpiarCampos(String tipo){
+    private void limpiarCampos(){
         
     }
     /**
@@ -534,7 +643,7 @@ public class Recepcion extends javax.swing.JFrame {
     private javax.swing.JTextField clientIdTxt;
     private javax.swing.JTextArea descPaqueteTxt;
     private javax.swing.JLabel distTxt;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton enviarEncomiendaBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;

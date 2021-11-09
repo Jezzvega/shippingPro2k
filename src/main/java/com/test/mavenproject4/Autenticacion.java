@@ -239,16 +239,20 @@ public class Autenticacion extends javax.swing.JFrame {
                     break;
                     
                     case "admin":
-                        View encomiendas = new View();
+                        Encomiendas_View encomiendas = new Encomiendas_View(usuario);
                         encomiendas.setVisible(true);
                     break;
                 }
-              Autenticacion au = new Autenticacion();
-              au.dispose();
+                
+                cerrarVentana();
             }
             
         });
 
+    }
+    
+    private void cerrarVentana(){
+        this.dispose();
     }
     
     /**
