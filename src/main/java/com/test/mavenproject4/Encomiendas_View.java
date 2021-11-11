@@ -198,6 +198,8 @@ public class Encomiendas_View extends javax.swing.JFrame {
                                 index++;
                             }
                             
+                            responseBody.close();
+                            
                         }
                     }
                 });

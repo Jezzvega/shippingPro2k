@@ -6,17 +6,38 @@
  */
 package com.test.mavenproject4;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.io.IOException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
 /**
  *
  * @author jcs98
  */
 public class VistaAdministrador extends javax.swing.JFrame {
 
-    /**
-     * Creates new form VistaAdministrador
-     */
+    private final OkHttpClient client = new OkHttpClient();
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
+    private Usuario user;
+    
     public VistaAdministrador() {
         initComponents();
+    }
+    
+    public VistaAdministrador(Usuario user) {
+        initComponents();
+        this.user = user;
+        
+        loadAdminDashboard();
     }
 
     /**
@@ -29,28 +50,28 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        jTextField1 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         panelAdmin = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel28 = new javax.swing.JLabel();
+        vehicDispLb = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        enProcesoLb = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        recibidasLb = new javax.swing.JLabel();
         jPanel16 = new javax.swing.JPanel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
+        enviadasLb = new javax.swing.JLabel();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel18 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
+        ingresoMonetarioLb = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
         jPanel19 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
@@ -105,6 +126,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
 
+        jTextField1.setText("jTextField1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelAdmin.setTabPlacement(javax.swing.JTabbedPane.LEFT);
@@ -119,11 +142,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
         jLabel1.setText("Vehículos disponibles");
 
-        jLabel3.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        jLabel3.setText("x");
-
-        jLabel28.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        jLabel28.setText("/10");
+        vehicDispLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
+        vehicDispLb.setText("0/0");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -133,11 +153,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel28)))
-                .addContainerGap(158, Short.MAX_VALUE))
+                    .addComponent(vehicDispLb, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,9 +162,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel28)))
+                .addComponent(vehicDispLb))
         );
 
         jPanel2.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 340, 60));
@@ -155,12 +170,12 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jLabel4.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
-        jLabel4.setText("Por enviar");
+        jLabel4.setText("En Camino");
 
-        jLabel5.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(0, 153, 0));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel5.setText("3");
+        enProcesoLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
+        enProcesoLb.setForeground(new java.awt.Color(0, 153, 0));
+        enProcesoLb.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        enProcesoLb.setText("0");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -171,8 +186,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(0, 81, Short.MAX_VALUE))
-                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 74, Short.MAX_VALUE))
+                    .addComponent(enProcesoLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -181,7 +196,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5)
+                .addComponent(enProcesoLb)
                 .addContainerGap())
         );
 
@@ -190,12 +205,12 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jLabel19.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
-        jLabel19.setText("En camino a inv.");
+        jLabel19.setText("Recibidas");
 
-        jLabel20.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel20.setText("7");
+        recibidasLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
+        recibidasLb.setForeground(new java.awt.Color(204, 0, 0));
+        recibidasLb.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        recibidasLb.setText("0");
 
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
@@ -206,8 +221,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel15Layout.createSequentialGroup()
                         .addComponent(jLabel19)
-                        .addGap(0, 35, Short.MAX_VALUE))
-                    .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 83, Short.MAX_VALUE))
+                    .addComponent(recibidasLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel15Layout.setVerticalGroup(
@@ -216,7 +231,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel20))
+                .addComponent(recibidasLb))
         );
 
         jPanel2.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 170, 60));
@@ -224,12 +239,12 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jLabel21.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
-        jLabel21.setText("En camino a entr.");
+        jLabel21.setText("Entregadas");
 
-        jLabel22.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        jLabel22.setForeground(new java.awt.Color(204, 0, 0));
-        jLabel22.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel22.setText("5");
+        enviadasLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
+        enviadasLb.setForeground(new java.awt.Color(204, 0, 0));
+        enviadasLb.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        enviadasLb.setText("0");
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -241,7 +256,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                     .addGroup(jPanel16Layout.createSequentialGroup()
                         .addComponent(jLabel21)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(enviadasLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel16Layout.setVerticalGroup(
@@ -250,7 +265,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel21)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel22)
+                .addComponent(enviadasLb)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -272,7 +287,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5"
+                "EMISOR", "RECEPTOR", "PRIORIDAD", "FECHA DE REGISTRO", "COSTO"
             }
         ));
         jScrollPane2.setViewportView(jTable2);
@@ -299,12 +314,12 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         jLabel6.setFont(new java.awt.Font("Montserrat", 1, 14)); // NOI18N
-        jLabel6.setText("Ganancias del mes");
+        jLabel6.setText("Ingreso Monetario");
 
-        jLabel23.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(0, 153, 0));
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel23.setText("15 200");
+        ingresoMonetarioLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
+        ingresoMonetarioLb.setForeground(new java.awt.Color(0, 153, 0));
+        ingresoMonetarioLb.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        ingresoMonetarioLb.setText("0.00");
 
         jLabel24.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 153, 0));
@@ -320,10 +335,10 @@ public class VistaAdministrador extends javax.swing.JFrame {
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(jLabel24)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(ingresoMonetarioLb, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel18Layout.createSequentialGroup()
                         .addComponent(jLabel6)
-                        .addGap(0, 27, Short.MAX_VALUE)))
+                        .addGap(0, 29, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel18Layout.setVerticalGroup(
@@ -334,7 +349,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel24)
-                    .addComponent(jLabel23)))
+                    .addComponent(ingresoMonetarioLb)))
         );
 
         jPanel2.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 180, 60));
@@ -599,7 +614,9 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelAdmin)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(panelAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 773, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -620,6 +637,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     /**
@@ -661,6 +679,9 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JLabel enProcesoLb;
+    private javax.swing.JLabel enviadasLb;
+    private javax.swing.JLabel ingresoMonetarioLb;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton4;
@@ -680,17 +701,12 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
-    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
@@ -698,7 +714,6 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel15;
@@ -735,6 +750,62 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
+    private javax.swing.JTextField jTextField1;
     private javax.swing.JTabbedPane panelAdmin;
+    private javax.swing.JLabel recibidasLb;
+    private javax.swing.JLabel vehicDispLb;
     // End of variables declaration//GEN-END:variables
+
+    private void loadAdminDashboard() {
+        
+        Request request = new Request.Builder()
+                //.url("https://t-express-rest.herokuapp.com/encomiendas/")
+                .url("http://localhost:3000/encomiendas/adminPanel")
+                .header("auth-token", user.getToken())
+                .build();
+                
+                client.newCall(request).enqueue(new Callback(){
+                    @Override
+                    public void onFailure(Call call, IOException ioe) {
+                        
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response rspns) throws IOException {
+                        
+                        try (ResponseBody responseBody = rspns.body()) {
+                            String json = responseBody.string();
+                            
+                            if (!rspns.isSuccessful()) {
+                        
+                                JOptionPane.showMessageDialog(
+                                        null,
+                                        json, 
+                                        "Ha ocurrido un problema",
+                                        JOptionPane.ERROR_MESSAGE
+                                );
+
+                                responseBody.close();
+
+                                return;
+
+                            }
+                            
+                            AdminDashboardData adminData = new Gson().fromJson(json, AdminDashboardData.class);
+                            
+                            ingresoMonetarioLb.setText(String.format("%.2f", adminData.getIngreso()));
+                            
+                            recibidasLb.setText(""+adminData.getRecibidas());
+                            enProcesoLb.setText(""+adminData.getEn_camino());
+                            enviadasLb.setText(""+adminData.getEntregadas());
+                            
+                            vehicDispLb.setText(String.format("%d/%d", adminData.getVehiculos_disponibles(), adminData.getVehiculos_totales()));
+                            
+                            responseBody.close();
+                            
+                        }
+                    }
+                });
+        
+    }
 }

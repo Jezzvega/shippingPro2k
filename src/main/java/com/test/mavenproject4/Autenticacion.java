@@ -239,6 +239,11 @@ public class Autenticacion extends javax.swing.JFrame {
                     break;
                     
                     case "admin":
+                        VistaAdministrador adminView = new VistaAdministrador(usuario);
+                        adminView.setVisible(true);
+                    break;
+                    
+                    case "test":
                         Encomiendas_View encomiendas = new Encomiendas_View(usuario);
                         encomiendas.setVisible(true);
                     break;
