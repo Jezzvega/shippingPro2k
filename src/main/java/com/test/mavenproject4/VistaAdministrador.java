@@ -37,7 +37,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
     public VistaAdministrador(Usuario user) {
         initComponents();
         this.user = user;
-        
+        //akjskagkshdsjagdjsvakdsjav
         //loadAdminDashboard();
     }
 
