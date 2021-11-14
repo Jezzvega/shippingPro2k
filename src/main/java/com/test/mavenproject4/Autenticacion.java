@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import static com.test.mavenproject4.AuthHttpClient.JSON;
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,16 +20,17 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+
 /**
  *
  * @author jezzvega
  */
 public class Autenticacion extends javax.swing.JFrame {
-    
+
     private final OkHttpClient client = new OkHttpClient();
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     public static Usuario usuario;
-    
+
     public Autenticacion() {
         initComponents();
     }
@@ -72,9 +74,9 @@ public class Autenticacion extends javax.swing.JFrame {
         jLabel3.setText("Contraseña");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, -1, -1));
 
-        passTxt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passTxtActionPerformed(evt);
+        passTxt.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                passTxtKeyReleased(evt);
             }
         });
         getContentPane().add(passTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 265, -1));
@@ -182,84 +184,92 @@ public class Autenticacion extends javax.swing.JFrame {
     private void accederBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accederBtnActionPerformed
 
         try {
-               
+
             login(mailTxt.getText(), passTxt.getText());
-            
+
         } catch (Exception ex) {
             Logger.getLogger(Autenticacion.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_accederBtnActionPerformed
 
-    private void passTxtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passTxtActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passTxtActionPerformed
+    private void passTxtKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passTxtKeyReleased
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
+
+                login(mailTxt.getText(), passTxt.getText());
+
+            } catch (Exception ex) {
+                Logger.getLogger(Autenticacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_passTxtKeyReleased
 
     public void login(String mail, String pass) throws Exception {
-        
+
         errorTxt.setText(null);
-       
-        jPanel1.setCursor(Cursor.getPredefinedCursor( Cursor.WAIT_CURSOR ) );
+
+        jPanel1.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         accederBtn.setEnabled(false);
         pBar.setVisible(true);
-       
-     
-        String json = "{\"correo\": \""+ mail +"\",\"pass\": \"" + pass + "\"}";
+
+        String json = "{\"correo\": \"" + mail + "\",\"pass\": \"" + pass + "\"}";
 
         RequestBody body = RequestBody.create(JSON, json);
-        
+
         Request request = new Request.Builder()
-            .url("https://t-express-rest.herokuapp.com/auth/login")
-            .post(body)
-            .build();
-        
-        client.newCall(request).enqueue(new Callback(){
+                .url("https://t-express-rest.herokuapp.com/auth/login")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException ioe) {
             }
 
             @Override
             public void onResponse(Call call, Response res) throws IOException {
-                
-                if(!res.isSuccessful()){
+
+                if (!res.isSuccessful()) {
                     errorTxt.setText(res.body().string());
                     accederBtn.setEnabled(true);
                     pBar.setVisible(false);
-                   jPanel1.setCursor(Cursor.getPredefinedCursor( Cursor.DEFAULT_CURSOR ) );
+                    jPanel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
                     return;
                 }
-                
+
                 usuario = new Gson().fromJson(res.body().string(), Usuario.class);
-                
-                switch(usuario.getRole()){
+
+                switch (usuario.getRole()) {
                     case "recepcion":
                         Recepcion rec = new Recepcion(usuario);
                         rec.setVisible(true);
-                        
-                    break;
-                    
+
+                        break;
+
                     case "admin":
                         VistaAdministrador adminView = new VistaAdministrador(usuario);
                         adminView.setVisible(true);
-                    break;
-                    
+                        break;
+
                     case "test":
                         Encomiendas_View encomiendas = new Encomiendas_View(usuario);
                         encomiendas.setVisible(true);
-                    break;
+                        break;
                 }
-                
+
                 cerrarVentana();
             }
-            
+
         });
 
     }
-    
-    private void cerrarVentana(){
+
+    private void cerrarVentana() {
         this.dispose();
     }
-    
+
     /**
      * @param args the command line arguments
      */
