@@ -17,10 +17,11 @@ public class Encomiendas {
     private String recibe;
     private int prioridad;
     private float peso_paquete;
-    private String fecha_entrada;
+    private String fecha_de_entrada;
     private int estado;
     private float costo;
     private String descripcion;
+    private int tiempo_envio;
 
     public int getId() {
         return id;
@@ -62,12 +63,12 @@ public class Encomiendas {
         this.peso_paquete = peso_paquete;
     }
 
-    public String getFecha_entrada() {
-        return fecha_entrada;
+    public String getFecha_de_entrada() {
+        return fecha_de_entrada;
     }
 
-    public void setFecha_entrada(String fecha_entrada) {
-        this.fecha_entrada = fecha_entrada;
+    public void setFecha_de_entrada(String fecha_de_entrada) {
+        this.fecha_de_entrada = fecha_de_entrada;
     }
 
     public int getEstado() {
@@ -96,6 +97,31 @@ public class Encomiendas {
     
     public String getPrioridadText(){
         return ((this.prioridad == 0) ? "Baja" : "Alta");
+    }
+    
+    public String getEstadoText(){
+        
+        String estadoTxt = "";
+        
+        switch(estado){
+            case 0 -> estadoTxt = "Recibida";
+            case 1 -> estadoTxt = "En Camino";
+            case 2 -> estadoTxt = "Entregada";
+        }
+        
+        return estadoTxt;
+    }
+
+    public int getTiempo_envio() {
+        return tiempo_envio;
+    }
+
+    public void setTiempo_envio(int tiempo_envio) {
+        this.tiempo_envio = tiempo_envio;
+    }
+    
+    public String getTiempoEstTxt(){
+        return String.format("%d dia(s)", this.tiempo_envio);
     }
     
 }

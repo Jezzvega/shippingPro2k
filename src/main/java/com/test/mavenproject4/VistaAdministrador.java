@@ -8,15 +8,23 @@ package com.test.mavenproject4;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import static com.test.mavenproject4.Recepcion.JSON;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
+import javax.swing.table.DefaultTableModel;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
@@ -29,16 +37,35 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private final OkHttpClient client = new OkHttpClient();
     public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private Usuario user;
-    
+    private List<String> filtros = new ArrayList<>();
+    private List<String> ordenarPor = new ArrayList<>();
+    List<Encomiendas> encomiendas;
+
     public VistaAdministrador() {
         initComponents();
     }
-    
+
     public VistaAdministrador(Usuario user) {
         initComponents();
         this.user = user;
-        //akjskagkshdsjagdjsvakdsjav
-        //loadAdminDashboard();
+
+        loadAdminDashboard();
+
+        //Se inicializan los filtros
+        filtros.add("estado in(0, 1, 2)");
+        filtros.add("estado = 0");
+        filtros.add("estado = 1");
+        filtros.add("estado = 2");
+        filtros.add("prioridad = 1");
+        filtros.add("prioridad = 0");
+
+        //Se inicializan los ordenar
+        ordenarPor.add("fecha_entrada desc");
+        ordenarPor.add("fecha_entrada asc");
+        ordenarPor.add("estado");
+        ordenarPor.add("prioridad");
+        ordenarPor.add("c1.nombre");
+        ordenarPor.add("c2.nombre");
     }
 
     /**
@@ -69,7 +96,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
         enviadasLb = new javax.swing.JLabel();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        vistaGeneralJTable = new javax.swing.JTable();
         jPanel18 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         ingresoMonetarioLb = new javax.swing.JLabel();
@@ -77,15 +104,16 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        encomiendasJTable = new javax.swing.JTable();
         jPanel21 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        filtroPorCBox = new javax.swing.JComboBox<>();
         jLabel26 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        ordenPorCBox = new javax.swing.JComboBox<>();
         jPanel22 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        ingresoFiltradoLb = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel23 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -122,6 +150,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel31 = new javax.swing.JPanel();
         jButton9 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
+        jPanel9 = new javax.swing.JPanel();
 
         jTextField1.setText("jTextField1");
 
@@ -133,6 +162,11 @@ public class VistaAdministrador extends javax.swing.JFrame {
         panelAdmin.setToolTipText("");
         panelAdmin.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 16)); // NOI18N
         panelAdmin.setName("Recibo de paquetes\nEnvío de paquetes\nAdministrar clientes\nAdministrar repartidores\nAdministrar vehículos"); // NOI18N
+        panelAdmin.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                panelAdminStateChanged(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "VISTA GENERAL (ÚLTIMOS 30 DÍAS) ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Yu Gothic UI Semilight", 1, 14))); // NOI18N
         jPanel2.setName(""); // NOI18N
@@ -267,8 +301,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
         jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ÚLTIMAS 10 ENCOMIENDAS", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Yu Gothic UI Semilight", 1, 14))); // NOI18N
 
-        jTable2.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        vistaGeneralJTable.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
+        vistaGeneralJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -282,10 +316,25 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "EMISOR", "RECEPTOR", "PRIORIDAD", "FECHA DE REGISTRO", "COSTO"
+                "EMISOR", "RECEPTOR", "ESTADO", "FECHA DE REGISTRO", "COSTO"
             }
-        ));
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(vistaGeneralJTable);
+        if (vistaGeneralJTable.getColumnModel().getColumnCount() > 0) {
+            vistaGeneralJTable.getColumnModel().getColumn(0).setResizable(false);
+            vistaGeneralJTable.getColumnModel().getColumn(1).setResizable(false);
+            vistaGeneralJTable.getColumnModel().getColumn(2).setResizable(false);
+            vistaGeneralJTable.getColumnModel().getColumn(3).setResizable(false);
+            vistaGeneralJTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
@@ -300,7 +349,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 238, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -391,18 +440,36 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel20.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de encomiendas"));
         jPanel20.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        encomiendasJTable.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        encomiendasJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "EMISOR", "RECEPTOR", "ESTADO", "PRIORIDAD", "FECHA RECIBIDO", "TIEMPO ESTIMADO", "COSTO"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(encomiendasJTable);
+        if (encomiendasJTable.getColumnModel().getColumnCount() > 0) {
+            encomiendasJTable.getColumnModel().getColumn(0).setResizable(false);
+            encomiendasJTable.getColumnModel().getColumn(1).setResizable(false);
+            encomiendasJTable.getColumnModel().getColumn(2).setResizable(false);
+            encomiendasJTable.getColumnModel().getColumn(3).setResizable(false);
+            encomiendasJTable.getColumnModel().getColumn(4).setResizable(false);
+            encomiendasJTable.getColumnModel().getColumn(5).setResizable(false);
+            encomiendasJTable.getColumnModel().getColumn(6).setResizable(false);
+        }
 
         jPanel20.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 680, 370));
 
@@ -414,29 +481,42 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jLabel2.setText("Filtrar por:");
         jPanel21.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel21.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, -1));
+        filtroPorCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos (por defecto)", "Recibidas", "En Camino", "Entregadas", "Alta Prioridad", "Baja Prioridad" }));
+        jPanel21.add(filtroPorCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, -1));
 
         jLabel26.setText("Ordenar por:");
         jPanel21.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel21.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 140, -1));
+        ordenPorCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Recientes (por defecto)", "Antiguos", "Estado", "Prioridad", "Emisor", "Receptor" }));
+        jPanel21.add(ordenPorCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 140, -1));
 
         jPanel3.add(jPanel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 500, 60));
 
         jPanel22.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
         jPanel22.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton1.setText("Modificar");
-        jButton1.setToolTipText("Modificar");
-        jPanel22.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 70, -1));
-
         jButton4.setText("Eliminar");
         jButton4.setToolTipText("Eliminar");
-        jPanel22.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 70, -1));
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel22.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 160, -1));
 
         jPanel3.add(jPanel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 200, 60));
+
+        jButton2.setText("Buscar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 490, -1, -1));
+
+        ingresoFiltradoLb.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
+        ingresoFiltradoLb.setText("$0.00");
+        jPanel3.add(ingresoFiltradoLb, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, -1, -1));
 
         panelAdmin.addTab("ENCOMIENDAS", jPanel3);
 
@@ -602,6 +682,19 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
         panelAdmin.addTab("VEHÍCULOS", jPanel6);
 
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 899, Short.MAX_VALUE)
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 521, Short.MAX_VALUE)
+        );
+
+        panelAdmin.addTab("tab6", jPanel9);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -636,6 +729,115 @@ public class VistaAdministrador extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void panelAdminStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_panelAdminStateChanged
+        JTabbedPane menu = (JTabbedPane) evt.getSource();
+
+        int selectedTab = menu.getSelectedIndex();
+
+        switch (selectedTab) {
+            case 0:
+                if (user != null) {
+                    loadAdminDashboard();
+                }
+                break;
+            case 1:
+                loadEncomiendas();
+                break;
+            case 2:
+                loadClientes();
+                break;
+            case 3:
+                loadRepartidores();
+                break;
+            case 4:
+                loadVehiculos();
+                break;
+        }
+    }//GEN-LAST:event_panelAdminStateChanged
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        loadEncomiendas();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+
+        Object[] options = {"Borrar", "Cancelar"};
+
+        int dialogRes = JOptionPane.showOptionDialog(
+                null,
+                "La encomienda se borrará, esta accion no puede ser revertida.\n\n¿Desea Continuar?",
+                "Borrar Encomienda",
+                JOptionPane.OK_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]
+        );
+
+        if (dialogRes == JOptionPane.OK_OPTION) {
+
+            int selectedRow = encomiendasJTable.getSelectedRow();
+
+            Encomiendas encomienda = encomiendas.get(selectedRow);
+
+            int encomiendaId = encomienda.getId();
+
+            String json = "{\n"
+                    + "    \"id\": " + encomiendaId + "\n"
+                    + "}";
+
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    //.url("https://t-express-rest.herokuapp.com/encomiendas/eliminar")
+                    .url("http://localhost:3000/encomiendas/eliminar")
+                    .header("auth-token", user.getToken())
+                    .delete(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException ioe) {
+                    System.out.println(ioe.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response rspns) throws IOException {
+
+                    try ( ResponseBody responseBody = rspns.body()) {
+                        String json = responseBody.string();
+
+                        if (!rspns.isSuccessful()) {
+
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    json,
+                                    "Ha ocurrido un problema",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            responseBody.close();
+
+                            return;
+
+                        }
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Eliminada",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        loadEncomiendas();
+
+                    }
+                }
+            });
+
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -668,8 +870,6 @@ public class VistaAdministrador extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new VistaAdministrador().setVisible(true);
-                
-                //panelAdmin.add(rootPane);
             }
         });
     }
@@ -677,18 +877,19 @@ public class VistaAdministrador extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel enProcesoLb;
+    private javax.swing.JTable encomiendasJTable;
     private javax.swing.JLabel enviadasLb;
+    private javax.swing.JComboBox<String> filtroPorCBox;
+    private javax.swing.JLabel ingresoFiltradoLb;
     private javax.swing.JLabel ingresoMonetarioLb;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;
@@ -733,72 +934,173 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JComboBox<String> ordenPorCBox;
     private javax.swing.JTabbedPane panelAdmin;
     private javax.swing.JLabel recibidasLb;
     private javax.swing.JLabel vehicDispLb;
+    private javax.swing.JTable vistaGeneralJTable;
     // End of variables declaration//GEN-END:variables
 
     private void loadAdminDashboard() {
-        
+
         Request request = new Request.Builder()
                 //.url("https://t-express-rest.herokuapp.com/encomiendas/")
                 .url("http://localhost:3000/encomiendas/adminPanel")
                 .header("auth-token", user.getToken())
                 .build();
-                
-                client.newCall(request).enqueue(new Callback(){
-                    @Override
-                    public void onFailure(Call call, IOException ioe) {
-                        
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response rspns) throws IOException {
+
+                try ( ResponseBody responseBody = rspns.body()) {
+                    String json = responseBody.string();
+
+                    if (!rspns.isSuccessful()) {
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Ha ocurrido un problema",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        return;
+
                     }
 
-                    @Override
-                    public void onResponse(Call call, Response rspns) throws IOException {
-                        
-                        try (ResponseBody responseBody = rspns.body()) {
-                            String json = responseBody.string();
-                            
-                            if (!rspns.isSuccessful()) {
-                        
-                                JOptionPane.showMessageDialog(
-                                        null,
-                                        json, 
-                                        "Ha ocurrido un problema",
-                                        JOptionPane.ERROR_MESSAGE
-                                );
+                    AdminDashboardData adminData = new Gson().fromJson(json, AdminDashboardData.class);
 
-                                responseBody.close();
+                    ingresoMonetarioLb.setText(String.format("%.2f", adminData.getIngreso()));
 
-                                return;
+                    recibidasLb.setText("" + adminData.getRecibidas());
+                    enProcesoLb.setText("" + adminData.getEn_camino());
+                    enviadasLb.setText("" + adminData.getEntregadas());
 
-                            }
-                            
-                            AdminDashboardData adminData = new Gson().fromJson(json, AdminDashboardData.class);
-                            
-                            ingresoMonetarioLb.setText(String.format("%.2f", adminData.getIngreso()));
-                            
-                            recibidasLb.setText(""+adminData.getRecibidas());
-                            enProcesoLb.setText(""+adminData.getEn_camino());
-                            enviadasLb.setText(""+adminData.getEntregadas());
-                            
-                            vehicDispLb.setText(String.format("%d/%d", adminData.getVehiculos_disponibles(), adminData.getVehiculos_totales()));
-                            
-                            responseBody.close();
-                            
-                        }
+                    vehicDispLb.setText(String.format("%d/%d", adminData.getVehiculos_disponibles(), adminData.getVehiculos_totales()));
+
+                    int index = 0;
+
+                    for (Encomiendas encomienda : adminData.getUltimasEncomiendas()) {
+
+                        vistaGeneralJTable.getModel().setValueAt(encomienda.getEnvia(), index, 0);
+                        vistaGeneralJTable.getModel().setValueAt(encomienda.getRecibe(), index, 1);
+                        vistaGeneralJTable.getModel().setValueAt(encomienda.getEstadoText(), index, 2);
+                        vistaGeneralJTable.getModel().setValueAt(encomienda.getFecha_de_entrada(), index, 3);
+                        vistaGeneralJTable.getModel().setValueAt(String.format("%.2f", encomienda.getCosto()), index, 4);
+
+                        index++;
                     }
-                });
-        
+
+                    responseBody.close();
+
+                }
+            }
+        });
+
+    }
+
+    private void loadEncomiendas() {
+
+        int selectedFiltro = filtroPorCBox.getSelectedIndex();
+        int selectedOrden = ordenPorCBox.getSelectedIndex();
+
+        String queryParams = "?filtro=" + filtros.get(selectedFiltro) + "&orden=" + ordenarPor.get(selectedOrden);
+
+        Request request = new Request.Builder()
+                //.url("https://t-express-rest.herokuapp.com/encomiendas/"+queryParams)
+                .url("http://localhost:3000/encomiendas/" + queryParams)
+                .header("auth-token", user.getToken())
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response rspns) throws IOException {
+
+                Double ingresoFiltrado = 0.00;
+
+                try ( ResponseBody responseBody = rspns.body()) {
+                    String json = responseBody.string();
+
+                    if (!rspns.isSuccessful()) {
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Ha ocurrido un problema",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        return;
+
+                    }
+
+                    encomiendas = new Gson().fromJson(json, new TypeToken<List<Encomiendas>>() {
+                    }.getType());
+
+                    DefaultTableModel dtm = (DefaultTableModel) encomiendasJTable.getModel();
+
+                    dtm.setRowCount(encomiendas.size());
+
+                    int index = 0;
+
+                    for (Encomiendas encomienda : encomiendas) {
+
+                        encomiendasJTable.getModel().setValueAt(encomienda.getEnvia(), index, 0);
+                        encomiendasJTable.getModel().setValueAt(encomienda.getRecibe(), index, 1);
+                        encomiendasJTable.getModel().setValueAt(encomienda.getEstadoText(), index, 2);
+                        encomiendasJTable.getModel().setValueAt(encomienda.getPrioridadText(), index, 3);
+                        encomiendasJTable.getModel().setValueAt(encomienda.getFecha_de_entrada(), index, 4);
+                        encomiendasJTable.getModel().setValueAt(encomienda.getTiempoEstTxt(), index, 5);
+                        encomiendasJTable.getModel().setValueAt(String.format("%.2f", encomienda.getCosto()), index, 6);
+
+                        ingresoFiltrado += encomienda.getCosto();
+
+                        index++;
+                    }
+
+                    ingresoFiltradoLb.setText(String.format("$%.2f", ingresoFiltrado));
+
+                    responseBody.close();
+
+                }
+            }
+        });
+    }
+
+    private void loadClientes() {
+
+    }
+
+    private void loadRepartidores() {
+
+    }
+
+    private void loadVehiculos() {
+
     }
 }

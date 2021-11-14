@@ -192,7 +192,7 @@ public class Encomiendas_View extends javax.swing.JFrame {
                                 jTable1.getModel().setValueAt(encomienda.getEnvia(), index, 1);
                                 jTable1.getModel().setValueAt(encomienda.getRecibe(), index, 2);
                                 jTable1.getModel().setValueAt(encomienda.getPrioridadText(), index, 3);
-                                jTable1.getModel().setValueAt(encomienda.getFecha_entrada(), index, 4);
+                                jTable1.getModel().setValueAt(encomienda.getFecha_de_entrada(), index, 4);
                                 jTable1.getModel().setValueAt(encomienda.getDescripcion(), index, 6);
 
                                 index++;

@@ -1,5 +1,7 @@
 package com.test.mavenproject4;
 
+import java.util.ArrayList;
+
 public class AdminDashboardData {
     
     private Double ingreso;
@@ -8,6 +10,7 @@ public class AdminDashboardData {
     private int entregadas;
     private int vehiculos_disponibles;
     private int vehiculos_totales;
+    private ArrayList<Encomiendas> ultimasEncomiendas;
 
     public Double getIngreso() {
         return ingreso;
@@ -55,6 +58,14 @@ public class AdminDashboardData {
 
     public void setVehiculos_totales(int vehiculos_totales) {
         this.vehiculos_totales = vehiculos_totales;
+    }
+
+    public ArrayList<Encomiendas> getUltimasEncomiendas() {
+        return ultimasEncomiendas;
+    }
+
+    public void setUltimasEncomiendas(ArrayList<Encomiendas> ultimasEncomiendas) {
+        this.ultimasEncomiendas = ultimasEncomiendas;
     }
     
 }

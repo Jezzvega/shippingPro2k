@@ -32,6 +32,7 @@ public class Recepcion extends javax.swing.JFrame {
     Double costoTotal = 0.00;
     Usuario user;
     double distancia = 0.00;
+    int diasAproximados = 0;
     
     LatLng laVilla = new LatLng(7.9375927056531, -80.4140151416752);
 
@@ -79,6 +80,8 @@ public class Recepcion extends javax.swing.JFrame {
         distTxt = new javax.swing.JLabel();
         totalCostoTxt = new javax.swing.JLabel();
         calcTotalCost = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
+        diasAproxTxt = new javax.swing.JLabel();
         enviarEncomiendaBtn = new javax.swing.JButton();
         addClienteBtn = new javax.swing.JButton();
 
@@ -95,12 +98,14 @@ public class Recepcion extends javax.swing.JFrame {
 
         clientIdTxt.setToolTipText("");
 
+        buscarClienteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_search_black_24dp.png"))); // NOI18N
         buscarClienteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarClienteBtnActionPerformed(evt);
             }
         });
 
+        verClienteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_visibility_black_24dp.png"))); // NOI18N
         verClienteBtn.setEnabled(false);
         verClienteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -141,12 +146,14 @@ public class Recepcion extends javax.swing.JFrame {
 
         clientIdRecTxt.setToolTipText("");
 
+        buscarClienteRecBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_search_black_24dp.png"))); // NOI18N
         buscarClienteRecBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buscarClienteRecBtnActionPerformed(evt);
             }
         });
 
+        verClienteRecBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_visibility_black_24dp.png"))); // NOI18N
         verClienteRecBtn.setEnabled(false);
         verClienteRecBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,7 +204,7 @@ public class Recepcion extends javax.swing.JFrame {
 
         altaPriorCheck.setText("Alta Prioridad:");
         altaPriorCheck.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
-        altaPriorCheck.setIconTextGap(15);
+        altaPriorCheck.setIconTextGap(65);
         altaPriorCheck.setMargin(new java.awt.Insets(1, 3, 0, 1));
 
         jLabel12.setText("Distancia:");
@@ -215,68 +222,74 @@ public class Recepcion extends javax.swing.JFrame {
             }
         });
 
+        jLabel13.setText("Tiempo Estimando:");
+
+        diasAproxTxt.setText("0 dia(s)");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(altaPriorCheck)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addContainerGap()
+                                .addComponent(jLabel9)
+                                .addGap(93, 93, 93)
+                                .addComponent(pesoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
-                                        .addGap(40, 40, 40)
-                                        .addComponent(pesoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addComponent(jLabel12)
-                                        .addGap(39, 39, 39)
-                                        .addComponent(distTxt)))))
+                                    .addComponent(jLabel13)
+                                    .addComponent(jLabel12))
+                                .addGap(39, 39, 39)
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(distTxt)
+                                    .addComponent(diasAproxTxt))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(totalCostoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(calcTotalCost, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(calcTotalCost, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(totalCostoTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jSeparator1)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel10)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 512, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(calcTotalCost, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel12)
-                        .addComponent(distTxt)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel12)
+                    .addComponent(calcTotalCost)
+                    .addComponent(distTxt))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(6, 10, Short.MAX_VALUE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(diasAproxTxt))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(totalCostoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(4, 4, 4))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(altaPriorCheck)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(pesoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(pesoTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalCostoTxt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
 
         enviarEncomiendaBtn.setFont(new java.awt.Font("Lucida Grande", 1, 13)); // NOI18N
@@ -288,6 +301,7 @@ public class Recepcion extends javax.swing.JFrame {
             }
         });
 
+        addClienteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/baseline_add_black_24dp.png"))); // NOI18N
         addClienteBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addClienteBtnActionPerformed(evt);
@@ -425,12 +439,40 @@ public class Recepcion extends javax.swing.JFrame {
             costoTotal += 10.00;
         }
         
+        diasAproximados = calcDiasAprox(distancia, altaPriorCheck.isSelected());
+        
+        diasAproxTxt.setText(String.format("%d dia(s)", diasAproximados));
+        
         totalCostoTxt.setText(String.format("$%.2f", costoTotal));
         
         if(costoTotal > 0) enviarEncomiendaBtn.setEnabled(true);
         
     }//GEN-LAST:event_calcTotalCostActionPerformed
-
+    
+    private int calcDiasAprox(Double dist, boolean altaPrioridad){
+        
+        int diasAprox = 0;
+        
+        if(altaPrioridad){
+            if(dist <= 300){
+                diasAprox = 1;
+            }else{
+                diasAprox = 2;
+            }
+        }else{
+            if(dist <= 100){
+                diasAprox = 3;
+            }else if(dist <= 300){
+                diasAprox = 5;
+            }else{
+                diasAprox = 7;
+            }
+        }
+        
+        return diasAprox;
+        
+    }
+    
     private void enviarEncomiendaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarEncomiendaBtnActionPerformed
         
         String descPaquete = descPaqueteTxt.getText();
@@ -455,13 +497,15 @@ public class Recepcion extends javax.swing.JFrame {
                         "    \"prioridad\": " + (altaPriorCheck.isSelected() ? 1 : 0) + ",\n" +
                         "    \"peso\": " + peso + ",\n" +
                         "    \"costo\": " + costoTotal + ",\n" +
+                        "    \"tiempo_envio\": " + diasAproximados + ",\n" +
                         "    \"descripcion\": \"" + descPaquete + "\"\n" +
                         "}";
         
         RequestBody body = RequestBody.create(JSON, json);
         
         Request request = new Request.Builder()
-            .url("https://t-express-rest.herokuapp.com/encomiendas/agregar")
+            //.url("https://t-express-rest.herokuapp.com/encomiendas/agregar")
+            .url("http://localhost:3000/encomiendas/agregar")
             .header("auth-token", user.getToken())
             .post(body)
             .build();
@@ -505,7 +549,6 @@ public class Recepcion extends javax.swing.JFrame {
                 
                 if(dialogRes == JOptionPane.OK_OPTION){
                     //se limpian todos lo campos
-                    
                 }
                 
             }
@@ -638,11 +681,13 @@ public class Recepcion extends javax.swing.JFrame {
     private javax.swing.JTextField clientIdRecTxt;
     private javax.swing.JTextField clientIdTxt;
     private javax.swing.JTextArea descPaqueteTxt;
+    private javax.swing.JLabel diasAproxTxt;
     private javax.swing.JLabel distTxt;
     private javax.swing.JButton enviarEncomiendaBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
