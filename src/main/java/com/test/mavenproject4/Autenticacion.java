@@ -10,8 +10,10 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -33,6 +35,10 @@ public class Autenticacion extends javax.swing.JFrame {
 
     public Autenticacion() {
         initComponents();
+        URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
+            // iconURL is null when not found
+    ImageIcon icon = new ImageIcon(iconURL);
+    this.setIconImage(icon.getImage());
     }
 
     /**
@@ -44,50 +50,58 @@ public class Autenticacion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        errorTxt = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         mailTxt = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         passTxt = new javax.swing.JPasswordField();
-        pBar = new javax.swing.JProgressBar();
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         accederBtn = new javax.swing.JButton();
-        errorTxt = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        pBar = new javax.swing.JProgressBar();
+        jPanel2 = new javax.swing.JPanel();
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio de Sesión-Shipping Pro 2k");
         setBackground(Color.WHITE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        setIconImages(null);
         setName(""); // NOI18N
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        getContentPane().add(mailTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, 265, -1));
+
+        errorTxt.setForeground(new java.awt.Color(255, 0, 0));
+        errorTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        errorTxt.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        getContentPane().add(errorTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 283, 230, 30));
+
+        jLabel6.setText("Desarrollado por STFU - Copyright  © 2021, T-Express. All rights reserved ");
+        getContentPane().add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 370, -1, -1));
+        getContentPane().add(mailTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 200, 265, -1));
 
         jLabel2.setText("Correo");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, -1, -1));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 180, -1, -1));
 
         jLabel3.setText("Contraseña");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 230, -1, -1));
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 230, -1, -1));
 
         passTxt.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 passTxtKeyReleased(evt);
             }
         });
-        getContentPane().add(passTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 250, 265, -1));
-        getContentPane().add(pBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 280, 350, -1));
-        pBar.setIndeterminate(true);
-        pBar.setVisible(false);
+        getContentPane().add(passTxt, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 250, 265, -1));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setName(""); // NOI18N
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/logo.jpg"))); // NOI18N
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(66, 31, 280, 110));
 
         accederBtn.setText("Acceder");
         accederBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -95,85 +109,42 @@ public class Autenticacion extends javax.swing.JFrame {
                 accederBtnActionPerformed(evt);
             }
         });
-
-        errorTxt.setForeground(new java.awt.Color(255, 0, 0));
-        errorTxt.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        errorTxt.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 10)); // NOI18N
-        jLabel5.setText("Desarrollado por STFU");
-
-        jLabel6.setText("copyright  © 2021, T-Express. All rights reserved ");
+        jPanel1.add(accederBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(151, 325, 144, 38));
 
         jLabel7.setText("Versión 1.0 (64 Bits)");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(294, 11, -1, -1));
 
         jLabel1.setFont(new java.awt.Font("Helvetica", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Iniciar Sesión");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 147, -1, -1));
+        jPanel1.add(pBar, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 280, 350, -1));
+        pBar.setIndeterminate(true);
+        pBar.setVisible(false);
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setText("Shipping Pro 2k");
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 0, 440, 400));
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ShippingPro2kcorta.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel7)
-                        .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(accederBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(142, 142, 142))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(169, 169, 169))))))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(errorTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(50, 50, 50)
-                                .addComponent(jLabel6))))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(140, 140, 140)
-                        .addComponent(jLabel1)))
-                .addGap(0, 81, Short.MAX_VALUE))
+                .addComponent(jLabel8)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jLabel8))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
-                .addComponent(errorTxt)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(accederBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel6)
-                .addContainerGap())
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 400));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 470, 400));
 
         getAccessibleContext().setAccessibleDescription("");
 
@@ -311,11 +282,11 @@ public class Autenticacion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField mailTxt;
     private javax.swing.JProgressBar pBar;
     private javax.swing.JPasswordField passTxt;

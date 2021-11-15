@@ -6,6 +6,8 @@ package com.test.mavenproject4;
 
 import static com.test.mavenproject4.AgregarVehiculo.JSON;
 import java.io.IOException;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,6 +34,10 @@ public class AgregarUsuario extends javax.swing.JFrame {
     public AgregarUsuario(Usuario user) {
         initComponents();
         this.user = user;
+         URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
+            // iconURL is null when not found
+         ImageIcon icon = new ImageIcon(iconURL);
+         this.setIconImage(icon.getImage());
     }
 
     /**
@@ -56,7 +62,7 @@ public class AgregarUsuario extends javax.swing.JFrame {
         guardarUsarioBtn = new javax.swing.JButton();
         errorLb = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Helvetica", 1, 24)); // NOI18N
         jLabel1.setText("Agregar Usuario");
@@ -295,8 +301,6 @@ public class AgregarUsuario extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel errorLb;
     private javax.swing.JButton guardarUsarioBtn;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

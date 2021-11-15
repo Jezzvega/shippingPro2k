@@ -14,6 +14,8 @@ import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.navigation.event.LoadFinished;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import java.io.IOException;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import okhttp3.Call;
@@ -48,6 +50,10 @@ public class AgregarCliente extends javax.swing.JFrame {
         this.user = user;
         initComponents();
         loadMap();
+         URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
+            // iconURL is null when not found
+         ImageIcon icon = new ImageIcon(iconURL);
+        this.setIconImage(icon.getImage());
     }
 
     /**

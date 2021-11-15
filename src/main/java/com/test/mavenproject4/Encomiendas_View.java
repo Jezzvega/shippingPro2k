@@ -9,7 +9,9 @@ package com.test.mavenproject4;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -36,6 +38,10 @@ public class Encomiendas_View extends javax.swing.JFrame {
     public Encomiendas_View(Usuario user) {
         initComponents();
         this.user = user;
+         URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
+            // iconURL is null when not found
+    ImageIcon icon = new ImageIcon(iconURL);
+    this.setIconImage(icon.getImage());
     }
 
     /**

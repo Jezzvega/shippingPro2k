@@ -4,6 +4,9 @@
  */
 package com.test.mavenproject4;
 
+import java.net.URL;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author josee
@@ -19,6 +22,11 @@ public class Asignacion extends javax.swing.JFrame {
     public Asignacion(Usuario user) {
         initComponents();
         this.user = user;
+           URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
+            // iconURL is null when not found
+    ImageIcon icon = new ImageIcon(iconURL);
+    this.setIconImage(icon.getImage());
+    
     }
 
     /**
@@ -39,7 +47,12 @@ public class Asignacion extends javax.swing.JFrame {
         jButton4 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PEDIDOS PENDIENTES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
         jPanel1.setToolTipText("");
@@ -159,6 +172,11 @@ public class Asignacion extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+     Autenticacion a = new Autenticacion();
+     a.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

@@ -7,8 +7,10 @@ package com.test.mavenproject4;
 import com.google.gson.Gson;
 import static com.test.mavenproject4.AgregarCliente.JSON;
 import java.io.IOException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -46,6 +48,10 @@ public class Recepcion extends javax.swing.JFrame {
     public Recepcion(Usuario user) {
         initComponents();
         this.user = user;
+          URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
+            // iconURL is null when not found
+        ImageIcon icon = new ImageIcon(iconURL);
+        this.setIconImage(icon.getImage());
     }
 
     /**
@@ -85,9 +91,14 @@ public class Recepcion extends javax.swing.JFrame {
         enviarEncomiendaBtn = new javax.swing.JButton();
         addClienteBtn = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Helvetica", 1, 24)); // NOI18N
         jLabel1.setText("Recepción de Encomiendas");
@@ -553,6 +564,11 @@ public class Recepcion extends javax.swing.JFrame {
         });
         
     }//GEN-LAST:event_enviarEncomiendaBtnActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+      Autenticacion a = new Autenticacion();
+     a.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     public void buscarCliente(String id, String tipo) throws Exception {
         

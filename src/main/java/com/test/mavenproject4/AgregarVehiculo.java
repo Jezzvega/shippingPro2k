@@ -6,6 +6,8 @@ package com.test.mavenproject4;
 
 import static com.test.mavenproject4.AgregarCliente.JSON;
 import java.io.IOException;
+import java.net.URL;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,6 +34,10 @@ public class AgregarVehiculo extends javax.swing.JFrame {
     public AgregarVehiculo(Usuario user) {
         initComponents();
         this.user = user;
+         URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
+            // iconURL is null when not found
+        ImageIcon icon = new ImageIcon(iconURL);
+        this.setIconImage(icon.getImage());
     }
 
     /**
@@ -60,7 +66,7 @@ public class AgregarVehiculo extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         errorLb = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Helvetica", 1, 24)); // NOI18N
         jLabel1.setText("Agregar Vehiculo");
@@ -94,7 +100,7 @@ public class AgregarVehiculo extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
                     .addComponent(vehiculoIdTxt)
                     .addComponent(vehiculoCapacidadTxt, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
