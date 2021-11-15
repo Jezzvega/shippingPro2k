@@ -9,16 +9,21 @@ package com.test.mavenproject4;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import static com.test.mavenproject4.Recepcion.JSON;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -39,7 +44,13 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private Usuario user;
     private List<String> filtros = new ArrayList<>();
     private List<String> ordenarPor = new ArrayList<>();
+    private List<String> clientesOrdenarPor = new ArrayList<>();
+    private List<String> vehiculosFiltrarPor = new ArrayList<>();
+    private List<String> vehiculosOrdenarPor = new ArrayList<>();
     List<Encomiendas> encomiendas;
+    List<Cliente> clientes;
+    List<Vehiculos> vehiculos;
+    List<Usuario> usuarios;
 
     public VistaAdministrador() {
         initComponents();
@@ -66,6 +77,37 @@ public class VistaAdministrador extends javax.swing.JFrame {
         ordenarPor.add("prioridad");
         ordenarPor.add("c1.nombre");
         ordenarPor.add("c2.nombre");
+        
+        //se inicializa el ordenar por de clientes
+        clientesOrdenarPor.add("id asc");
+        clientesOrdenarPor.add("nombre asc");
+        clientesOrdenarPor.add("ubic_prov asc");
+        
+        //se inicializan los filtros de vehiculos
+        vehiculosFiltrarPor.add("disponibilidad in(0, 1)");
+        vehiculosFiltrarPor.add("disponibilidad = 0");
+        vehiculosFiltrarPor.add("disponibilidad = 1");
+        
+        //se inicializa el ordenar por vehiculos
+        vehiculosOrdenarPor.add("id asc");
+        vehiculosOrdenarPor.add("disponibilidad asc");
+        vehiculosOrdenarPor.add("capacidad_carga asc");
+        
+        //se inicializa el cbox de las opciones de prov de clientes al editar
+        TableColumn provinciasColumn = clientesJTable.getColumnModel().getColumn(2);
+        
+        JComboBox provCBox = new JComboBox();
+        provCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bocas del Toro", "Chiriquí", "Coclé", "Colón", "Darién", "Herrera", "Los Santos", "Panamá", "Panamá Oeste", "Veraguas" }));
+    
+        provinciasColumn.setCellEditor(new DefaultCellEditor(provCBox));
+        
+        //se inicializa el cbox de las opciones de prov de clientes al editar
+        TableColumn rolColumn = usuariosJTable.getColumnModel().getColumn(2);
+        
+        JComboBox rolCBox = new JComboBox();
+        rolCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Recepcion", "Almacen" }));
+    
+        rolColumn.setCellEditor(new DefaultCellEditor(rolCBox));
     }
 
     /**
@@ -117,40 +159,37 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel23 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        clientesJTable = new javax.swing.JTable();
         jPanel24 = new javax.swing.JPanel();
         jLabel30 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<>();
+        clientesProvFiltroCBox = new javax.swing.JComboBox<>();
         jLabel31 = new javax.swing.JLabel();
-        jComboBox4 = new javax.swing.JComboBox<>();
+        clientesOrdenarPorCBox = new javax.swing.JComboBox<>();
         jPanel25 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel26 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
-        jPanel27 = new javax.swing.JPanel();
-        jLabel32 = new javax.swing.JLabel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jLabel33 = new javax.swing.JLabel();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jPanel28 = new javax.swing.JPanel();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        modificarClienteBtn = new javax.swing.JButton();
+        buscarClientesBtn = new javax.swing.JButton();
+        agregarClienteBtn = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         jPanel29 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
+        vehiculosJTable = new javax.swing.JTable();
         jPanel30 = new javax.swing.JPanel();
         jLabel34 = new javax.swing.JLabel();
-        jComboBox7 = new javax.swing.JComboBox<>();
+        vehiculosFiltroCBox = new javax.swing.JComboBox<>();
         jLabel35 = new javax.swing.JLabel();
-        jComboBox8 = new javax.swing.JComboBox<>();
+        vehiculosOrdenCBox = new javax.swing.JComboBox<>();
         jPanel31 = new javax.swing.JPanel();
-        jButton9 = new javax.swing.JButton();
+        vehiculosModificarBtn = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
+        vehiculosBuscarBtn = new javax.swing.JButton();
         jPanel9 = new javax.swing.JPanel();
+        jPanel33 = new javax.swing.JPanel();
+        usuariosModificarBtn = new javax.swing.JButton();
+        usuariosEliminarBtn = new javax.swing.JButton();
+        usuariosAgregarBtn = new javax.swing.JButton();
+        jPanel34 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        usuariosJTable = new javax.swing.JTable();
 
         jTextField1.setText("jTextField1");
 
@@ -304,16 +343,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
         vistaGeneralJTable.setFont(new java.awt.Font("Yu Gothic UI Semilight", 0, 14)); // NOI18N
         vistaGeneralJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "EMISOR", "RECEPTOR", "ESTADO", "FECHA DE REGISTRO", "COSTO"
@@ -327,6 +357,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        vistaGeneralJTable.setRowHeight(30);
         jScrollPane2.setViewportView(vistaGeneralJTable);
         if (vistaGeneralJTable.getColumnModel().getColumnCount() > 0) {
             vistaGeneralJTable.getColumnModel().getColumn(0).setResizable(false);
@@ -460,6 +491,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        encomiendasJTable.setRowHeight(30);
         jScrollPane1.setViewportView(encomiendasJTable);
         if (encomiendasJTable.getColumnModel().getColumnCount() > 0) {
             encomiendasJTable.getColumnModel().getColumn(0).setResizable(false);
@@ -522,10 +554,11 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel23.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de encomiendas"));
+        jPanel23.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Clientes"));
         jPanel23.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        clientesJTable.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        clientesJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -533,10 +566,25 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "NOMBRE", "PROVINCIA", "TELEFONO"
             }
-        ));
-        jScrollPane3.setViewportView(jTable3);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        clientesJTable.setRowHeight(30);
+        jScrollPane3.setViewportView(clientesJTable);
+        if (clientesJTable.getColumnModel().getColumnCount() > 0) {
+            clientesJTable.getColumnModel().getColumn(0).setResizable(false);
+            clientesJTable.getColumnModel().getColumn(1).setResizable(false);
+            clientesJTable.getColumnModel().getColumn(2).setResizable(false);
+            clientesJTable.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         jPanel23.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 680, 370));
 
@@ -545,106 +593,90 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel24.setBorder(javax.swing.BorderFactory.createTitledBorder("Controles"));
         jPanel24.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel30.setText("Filtrar por:");
+        jLabel30.setText("Provincia:");
         jPanel24.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel24.add(jComboBox3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, -1));
+        clientesProvFiltroCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas (por defecto)", "Bocas del Toro", "Chiriquí", "Coclé", "Colón", "Darién", "Herrera", "Los Santos", "Panamá", "Panamá Oeste", "Veraguas" }));
+        jPanel24.add(clientesProvFiltroCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, -1));
 
         jLabel31.setText("Ordenar por:");
         jPanel24.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel24.add(jComboBox4, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 140, -1));
+        clientesOrdenarPorCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Id (por defecto)", "Nombre", "Provincia" }));
+        jPanel24.add(clientesOrdenarPorCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 140, -1));
 
         jPanel4.add(jPanel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 500, 60));
 
         jPanel25.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
         jPanel25.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton5.setText("Modificar");
-        jButton5.setToolTipText("Modificar");
-        jPanel25.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 70, -1));
-
-        jButton6.setText("Eliminar");
-        jButton6.setToolTipText("Eliminar");
-        jPanel25.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 70, -1));
+        modificarClienteBtn.setText("Modificar");
+        modificarClienteBtn.setToolTipText("Modificar");
+        modificarClienteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarClienteBtnActionPerformed(evt);
+            }
+        });
+        jPanel25.add(modificarClienteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 160, -1));
 
         jPanel4.add(jPanel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 200, 60));
 
-        panelAdmin.addTab("CLIENTES", jPanel4);
-
-        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de encomiendas"));
-        jPanel26.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        buscarClientesBtn.setText("Buscar");
+        buscarClientesBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscarClientesBtnActionPerformed(evt);
             }
-        ));
-        jScrollPane4.setViewportView(jTable4);
+        });
+        jPanel4.add(buscarClientesBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 490, -1, -1));
 
-        jPanel26.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 680, 370));
+        agregarClienteBtn.setText("Agregar Cliente");
+        agregarClienteBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarClienteBtnActionPerformed(evt);
+            }
+        });
+        jPanel4.add(agregarClienteBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 490, -1, -1));
 
-        jPanel5.add(jPanel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 710, 400));
-
-        jPanel27.setBorder(javax.swing.BorderFactory.createTitledBorder("Controles"));
-        jPanel27.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel32.setText("Filtrar por:");
-        jPanel27.add(jLabel32, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel27.add(jComboBox5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, -1));
-
-        jLabel33.setText("Ordenar por:");
-        jPanel27.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
-
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel27.add(jComboBox6, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 140, -1));
-
-        jPanel5.add(jPanel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 500, 60));
-
-        jPanel28.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
-        jPanel28.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jButton7.setText("Modificar");
-        jButton7.setToolTipText("Modificar");
-        jPanel28.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 70, -1));
-
-        jButton8.setText("Eliminar");
-        jButton8.setToolTipText("Eliminar");
-        jPanel28.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 70, -1));
-
-        jPanel5.add(jPanel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 200, 60));
-
-        panelAdmin.addTab("REPARTIDORES", jPanel5);
+        panelAdmin.addTab("CLIENTES", jPanel4);
 
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel29.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de encomiendas"));
+        jPanel29.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Vehículos"));
         jPanel29.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        vehiculosJTable.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        vehiculosJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "MATRICULA", "DESCRIPCIÓN", "DISPONIBILIDAD", "CAPACIDAD (lb)", "CONDUCTOR", "CÉDULA"
             }
-        ));
-        jScrollPane5.setViewportView(jTable5);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        vehiculosJTable.setRowHeight(30);
+        jScrollPane5.setViewportView(vehiculosJTable);
+        if (vehiculosJTable.getColumnModel().getColumnCount() > 0) {
+            vehiculosJTable.getColumnModel().getColumn(0).setResizable(false);
+            vehiculosJTable.getColumnModel().getColumn(1).setResizable(false);
+            vehiculosJTable.getColumnModel().getColumn(2).setResizable(false);
+            vehiculosJTable.getColumnModel().getColumn(3).setResizable(false);
+            vehiculosJTable.getColumnModel().getColumn(3).setHeaderValue("CAPACIDAD (lb)");
+            vehiculosJTable.getColumnModel().getColumn(4).setResizable(false);
+            vehiculosJTable.getColumnModel().getColumn(4).setHeaderValue("CONDUCTOR");
+            vehiculosJTable.getColumnModel().getColumn(5).setResizable(false);
+            vehiculosJTable.getColumnModel().getColumn(5).setHeaderValue("CÉDULA");
+        }
 
         jPanel29.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 680, 370));
 
@@ -656,44 +688,134 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jLabel34.setText("Filtrar por:");
         jPanel30.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
 
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel30.add(jComboBox7, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, -1));
+        vehiculosFiltroCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos (por defecto)", "Disponibles", "Ocupados" }));
+        jPanel30.add(vehiculosFiltroCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 140, -1));
 
         jLabel35.setText("Ordenar por:");
         jPanel30.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 20, -1, -1));
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jPanel30.add(jComboBox8, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 140, -1));
+        vehiculosOrdenCBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Matricula (por defecto)", "Disponibilidad", "Capacidad" }));
+        jPanel30.add(vehiculosOrdenCBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 140, -1));
 
         jPanel6.add(jPanel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 500, 60));
 
         jPanel31.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
         jPanel31.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jButton9.setText("Modificar");
-        jButton9.setToolTipText("Modificar");
-        jPanel31.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 70, -1));
+        vehiculosModificarBtn.setText("Modificar");
+        vehiculosModificarBtn.setToolTipText("Modificar");
+        vehiculosModificarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vehiculosModificarBtnActionPerformed(evt);
+            }
+        });
+        jPanel31.add(vehiculosModificarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 70, -1));
 
-        jButton10.setText("Eliminar");
+        jButton10.setText("Agregar");
         jButton10.setToolTipText("Eliminar");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
         jPanel31.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 70, -1));
 
         jPanel6.add(jPanel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 10, 200, 60));
 
+        vehiculosBuscarBtn.setText("Buscar");
+        vehiculosBuscarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                vehiculosBuscarBtnActionPerformed(evt);
+            }
+        });
+        jPanel6.add(vehiculosBuscarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 490, 120, -1));
+
         panelAdmin.addTab("VEHÍCULOS", jPanel6);
+
+        jPanel33.setBorder(javax.swing.BorderFactory.createTitledBorder("Acciones"));
+        jPanel33.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        usuariosModificarBtn.setText("Modificar");
+        usuariosModificarBtn.setToolTipText("Modificar");
+        usuariosModificarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuariosModificarBtnActionPerformed(evt);
+            }
+        });
+        jPanel33.add(usuariosModificarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 150, -1));
+
+        usuariosEliminarBtn.setText("Eliminar");
+        usuariosEliminarBtn.setToolTipText("Eliminar");
+        usuariosEliminarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuariosEliminarBtnActionPerformed(evt);
+            }
+        });
+        jPanel33.add(usuariosEliminarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 20, 130, -1));
+
+        usuariosAgregarBtn.setText("Agregar");
+        usuariosAgregarBtn.setToolTipText("Eliminar");
+        usuariosAgregarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                usuariosAgregarBtnActionPerformed(evt);
+            }
+        });
+        jPanel33.add(usuariosAgregarBtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 20, 130, -1));
+
+        jPanel34.setBorder(javax.swing.BorderFactory.createTitledBorder("Lista de Usuarios"));
+        jPanel34.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        usuariosJTable.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        usuariosJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "NOMBRE", "CORREO", "ROL"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        usuariosJTable.setRowHeight(30);
+        jScrollPane6.setViewportView(usuariosJTable);
+        if (usuariosJTable.getColumnModel().getColumnCount() > 0) {
+            usuariosJTable.getColumnModel().getColumn(0).setResizable(false);
+            usuariosJTable.getColumnModel().getColumn(1).setResizable(false);
+            usuariosJTable.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jPanel34.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 690, 370));
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 899, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jPanel34, javax.swing.GroupLayout.PREFERRED_SIZE, 710, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(226, 226, 226)
+                        .addComponent(jPanel33, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 521, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel33, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel34, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
-        panelAdmin.addTab("tab6", jPanel9);
+        panelAdmin.addTab("USUARIOS", jPanel9);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -747,10 +869,10 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 loadClientes();
                 break;
             case 3:
-                loadRepartidores();
+                loadVehiculos();
                 break;
             case 4:
-                loadVehiculos();
+                loadUsuarios();
                 break;
         }
     }//GEN-LAST:event_panelAdminStateChanged
@@ -787,8 +909,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
             RequestBody body = RequestBody.create(JSON, json);
 
             Request request = new Request.Builder()
-                    //.url("https://t-express-rest.herokuapp.com/encomiendas/eliminar")
-                    .url("http://localhost:3000/encomiendas/eliminar")
+                    .url("https://t-express-rest.herokuapp.com/encomiendas/eliminar")
                     .header("auth-token", user.getToken())
                     .delete(body)
                     .build();
@@ -838,6 +959,380 @@ public class VistaAdministrador extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void buscarClientesBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarClientesBtnActionPerformed
+        loadClientes();
+    }//GEN-LAST:event_buscarClientesBtnActionPerformed
+
+    private void modificarClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarClienteBtnActionPerformed
+        
+        Object[] options = {"Actualizar", "Cancelar"};
+
+        int dialogRes = JOptionPane.showOptionDialog(
+                null,
+                "El cliente se actualizará con los nuevos datos.\n\n¿Desea Continuar?",
+                "Actualizar Cliente",
+                JOptionPane.OK_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]
+        );
+
+        if (dialogRes == JOptionPane.OK_OPTION) {
+
+            int selectedRow = clientesJTable.getSelectedRow();
+        
+            String id = clientesJTable.getModel().getValueAt(selectedRow, 0).toString();
+            String newName = clientesJTable.getModel().getValueAt(selectedRow, 1).toString();
+            String newProvincia = clientesJTable.getModel().getValueAt(selectedRow, 2).toString();
+            String newPhone = clientesJTable.getModel().getValueAt(selectedRow, 3).toString();
+
+            String json = "{\n" +
+                            "    \"id\": \"" + id + "\",\n" +
+                            "    \"nomb\": \"" + newName + "\",\n" +
+                            "    \"ubic_prov\": \"" + newProvincia + "\",\n" +
+                            "    \"tel\": \"" + newPhone + "\"\n" +
+                            "}";
+
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url("https://t-express-rest.herokuapp.com/clientes/actualizar")
+                    .header("auth-token", user.getToken())
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException ioe) {
+                    System.out.println(ioe.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response rspns) throws IOException {
+
+                    try ( ResponseBody responseBody = rspns.body()) {
+                        String json = responseBody.string();
+
+                        if (!rspns.isSuccessful()) {
+
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    json,
+                                    "Ha ocurrido un problema",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            responseBody.close();
+
+                            return;
+
+                        }
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Actualizado",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        loadClientes();
+
+                    }
+                }
+            });
+
+        }
+    }//GEN-LAST:event_modificarClienteBtnActionPerformed
+
+    private void agregarClienteBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarClienteBtnActionPerformed
+        
+        AgregarCliente addCli = new AgregarCliente(user);
+        addCli.setVisible(true);
+        
+        addCli.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                
+                loadClientes();
+            }
+            
+        });
+    }//GEN-LAST:event_agregarClienteBtnActionPerformed
+
+    private void vehiculosBuscarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehiculosBuscarBtnActionPerformed
+        loadVehiculos();
+    }//GEN-LAST:event_vehiculosBuscarBtnActionPerformed
+
+    private void vehiculosModificarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vehiculosModificarBtnActionPerformed
+        
+        Object[] options = {"Actualizar", "Cancelar"};
+
+        int dialogRes = JOptionPane.showOptionDialog(
+                null,
+                "El vehiculo se actualizará con los nuevos datos.\n\n¿Desea Continuar?",
+                "Actualizar Vehiculo",
+                JOptionPane.OK_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]
+        );
+
+        if (dialogRes == JOptionPane.OK_OPTION) {
+
+            int selectedRow = vehiculosJTable.getSelectedRow();
+        
+            String id = vehiculosJTable.getModel().getValueAt(selectedRow, 0).toString();
+            String newName = vehiculosJTable.getModel().getValueAt(selectedRow, 4).toString();
+            String newCedula = vehiculosJTable.getModel().getValueAt(selectedRow, 5).toString();
+
+            String json = "{\n" +
+                            "    \"id\": \"" + id + "\",\n" +
+                            "    \"nombre_chofer\": \"" + newName + "\",\n" +
+                            "    \"ced_chofer\": \"" + newCedula + "\"\n" +
+                            "}";
+
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url("https://t-express-rest.herokuapp.com/vehiculos/actualizar")
+                    .header("auth-token", user.getToken())
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException ioe) {
+                    System.out.println(ioe.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response rspns) throws IOException {
+
+                    try ( ResponseBody responseBody = rspns.body()) {
+                        String json = responseBody.string();
+
+                        if (!rspns.isSuccessful()) {
+
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    json,
+                                    "Ha ocurrido un problema",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            responseBody.close();
+
+                            return;
+
+                        }
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Actualizado",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        loadVehiculos();
+
+                    }
+                }
+            });
+
+        }
+    }//GEN-LAST:event_vehiculosModificarBtnActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        AgregarVehiculo addVehiculo = new AgregarVehiculo(user);
+        addVehiculo.setVisible(true);
+        
+        addVehiculo.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                
+                loadVehiculos();
+            }
+            
+        });
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void usuariosModificarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariosModificarBtnActionPerformed
+        
+        if(usuariosJTable.getSelectedRow() < 0) return;
+        
+        Object[] options = {"Actualizar", "Cancelar"};
+
+        int dialogRes = JOptionPane.showOptionDialog(
+                null,
+                "El usuario se actualizará con los nuevos datos.\n\n¿Desea Continuar?",
+                "Actualizar Usuario",
+                JOptionPane.OK_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]
+        );
+
+        if (dialogRes == JOptionPane.OK_OPTION) {
+
+            int selectedRow = usuariosJTable.getSelectedRow();
+        
+            int id = usuarios.get(selectedRow).getId();
+            String userRol = usuariosJTable.getModel().getValueAt(selectedRow, 2).toString();
+
+            String json = "{\n" +
+                            "    \"id\": " + id + ",\n" +
+                            "    \"role\": \"" + userRol + "\"\n" +
+                            "}";
+
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url("https://t-express-rest.herokuapp.com/auth/modificar")
+                    .header("auth-token", user.getToken())
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException ioe) {
+                    System.out.println(ioe.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response rspns) throws IOException {
+
+                    try ( ResponseBody responseBody = rspns.body()) {
+                        String json = responseBody.string();
+
+                        if (!rspns.isSuccessful()) {
+
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    json,
+                                    "Ha ocurrido un problema",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            responseBody.close();
+
+                            return;
+
+                        }
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Actualizado",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        loadUsuarios();
+
+                    }
+                }
+            });
+
+        }
+    }//GEN-LAST:event_usuariosModificarBtnActionPerformed
+
+    private void usuariosEliminarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariosEliminarBtnActionPerformed
+        
+        Object[] options = {"Borrar", "Cancelar"};
+
+        int dialogRes = JOptionPane.showOptionDialog(
+                null,
+                "El Usuario se borrará, esta accion no puede ser revertida.\n\n¿Desea Continuar?",
+                "Borrar Usuario",
+                JOptionPane.OK_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]
+        );
+
+        if (dialogRes == JOptionPane.OK_OPTION) {
+
+            int selectedRow = usuariosJTable.getSelectedRow();
+        
+            int id = usuarios.get(selectedRow).getId();
+
+            String json = "{\n"
+                    + "    \"id\": " + id + "\n"
+                    + "}";
+
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url("https://t-express-rest.herokuapp.com/auth/eliminar")
+                    .header("auth-token", user.getToken())
+                    .delete(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException ioe) {
+                    System.out.println(ioe.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response rspns) throws IOException {
+
+                    try ( ResponseBody responseBody = rspns.body()) {
+                        String json = responseBody.string();
+
+                        if (!rspns.isSuccessful()) {
+
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    json,
+                                    "Ha ocurrido un problema",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            responseBody.close();
+
+                            return;
+
+                        }
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Eliminado",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        loadUsuarios();
+
+                    }
+                }
+            });
+
+        }
+    }//GEN-LAST:event_usuariosEliminarBtnActionPerformed
+
+    private void usuariosAgregarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usuariosAgregarBtnActionPerformed
+        
+        AgregarUsuario addUser = new AgregarUsuario(user);
+        addUser.setVisible(true);
+        
+        addUser.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosed(WindowEvent e) {
+                super.windowClosed(e);
+                
+                loadUsuarios();
+            }
+            
+        });
+        
+    }//GEN-LAST:event_usuariosAgregarBtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -875,7 +1370,12 @@ public class VistaAdministrador extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton agregarClienteBtn;
+    private javax.swing.JButton buscarClientesBtn;
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JTable clientesJTable;
+    private javax.swing.JComboBox<String> clientesOrdenarPorCBox;
+    private javax.swing.JComboBox<String> clientesProvFiltroCBox;
     private javax.swing.JLabel enProcesoLb;
     private javax.swing.JTable encomiendasJTable;
     private javax.swing.JLabel enviadasLb;
@@ -885,17 +1385,6 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
@@ -904,8 +1393,6 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
-    private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
@@ -922,15 +1409,13 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
-    private javax.swing.JPanel jPanel26;
-    private javax.swing.JPanel jPanel27;
-    private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
+    private javax.swing.JPanel jPanel33;
+    private javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
@@ -938,24 +1423,30 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton modificarClienteBtn;
     private javax.swing.JComboBox<String> ordenPorCBox;
     private javax.swing.JTabbedPane panelAdmin;
     private javax.swing.JLabel recibidasLb;
+    private javax.swing.JButton usuariosAgregarBtn;
+    private javax.swing.JButton usuariosEliminarBtn;
+    private javax.swing.JTable usuariosJTable;
+    private javax.swing.JButton usuariosModificarBtn;
     private javax.swing.JLabel vehicDispLb;
+    private javax.swing.JButton vehiculosBuscarBtn;
+    private javax.swing.JComboBox<String> vehiculosFiltroCBox;
+    private javax.swing.JTable vehiculosJTable;
+    private javax.swing.JButton vehiculosModificarBtn;
+    private javax.swing.JComboBox<String> vehiculosOrdenCBox;
     private javax.swing.JTable vistaGeneralJTable;
     // End of variables declaration//GEN-END:variables
 
     private void loadAdminDashboard() {
 
         Request request = new Request.Builder()
-                //.url("https://t-express-rest.herokuapp.com/encomiendas/")
-                .url("http://localhost:3000/encomiendas/adminPanel")
+                .url("https://t-express-rest.herokuapp.com/encomiendas/adminPanel")
                 .header("auth-token", user.getToken())
                 .build();
 
@@ -996,6 +1487,10 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
                     vehicDispLb.setText(String.format("%d/%d", adminData.getVehiculos_disponibles(), adminData.getVehiculos_totales()));
 
+                    DefaultTableModel dtm = (DefaultTableModel) vistaGeneralJTable.getModel();
+
+                    dtm.setRowCount(adminData.getUltimasEncomiendas().size());
+                    
                     int index = 0;
 
                     for (Encomiendas encomienda : adminData.getUltimasEncomiendas()) {
@@ -1025,8 +1520,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
         String queryParams = "?filtro=" + filtros.get(selectedFiltro) + "&orden=" + ordenarPor.get(selectedOrden);
 
         Request request = new Request.Builder()
-                //.url("https://t-express-rest.herokuapp.com/encomiendas/"+queryParams)
-                .url("http://localhost:3000/encomiendas/" + queryParams)
+                .url("https://t-express-rest.herokuapp.com/encomiendas/"+queryParams)
                 .header("auth-token", user.getToken())
                 .build();
 
@@ -1093,14 +1587,194 @@ public class VistaAdministrador extends javax.swing.JFrame {
     }
 
     private void loadClientes() {
+        
+        String selectedFiltroProv = (clientesProvFiltroCBox.getSelectedIndex() == 0 ? "" : clientesProvFiltroCBox.getSelectedItem().toString());
+        int selectedOrden = clientesOrdenarPorCBox.getSelectedIndex();
 
-    }
+        String queryParams = "?filtro=ubic_prov='" + selectedFiltroProv + "'&orden=" + clientesOrdenarPor.get(selectedOrden);
 
-    private void loadRepartidores() {
+        Request request = new Request.Builder()
+                .url("https://t-express-rest.herokuapp.com/clientes/"+queryParams)
+                .header("auth-token", user.getToken())
+                .build();
 
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response rspns) throws IOException {
+
+                try ( ResponseBody responseBody = rspns.body()) {
+                    String json = responseBody.string();
+
+                    if (!rspns.isSuccessful()) {
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Ha ocurrido un problema",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        return;
+
+                    }
+
+                    clientes = new Gson().fromJson(json, new TypeToken<List<Cliente>>() {
+                    }.getType());
+
+                    DefaultTableModel dtm = (DefaultTableModel) clientesJTable.getModel();
+
+                    dtm.setRowCount(clientes.size());
+
+                    int index = 0;
+
+                    for (Cliente cliente : clientes) {
+
+                        clientesJTable.getModel().setValueAt(cliente.getId(), index, 0);
+                        clientesJTable.getModel().setValueAt(cliente.getNombre(), index, 1);
+                        clientesJTable.getModel().setValueAt(cliente.getUbic_prov(), index, 2);
+                        clientesJTable.getModel().setValueAt(cliente.getTelefono(), index, 3);
+
+                        index++;
+                    }
+
+                    responseBody.close();
+
+                }
+            }
+        });
     }
 
     private void loadVehiculos() {
+        
+        int selectedFiltro = vehiculosFiltroCBox.getSelectedIndex();
+        int selectedOrden = vehiculosOrdenCBox.getSelectedIndex();
 
+        String queryParams = "?filtro=" + vehiculosFiltrarPor.get(selectedFiltro) + "&orden=" + vehiculosOrdenarPor.get(selectedOrden);
+
+        Request request = new Request.Builder()
+                .url("https://t-express-rest.herokuapp.com/vehiculos/" + queryParams)
+                .header("auth-token", user.getToken())
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response rspns) throws IOException {
+
+                try ( ResponseBody responseBody = rspns.body()) {
+                    String json = responseBody.string();
+
+                    if (!rspns.isSuccessful()) {
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Ha ocurrido un problema",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        return;
+
+                    }
+
+                    vehiculos = new Gson().fromJson(json, new TypeToken<List<Vehiculos>>() {
+                    }.getType());
+
+                    DefaultTableModel dtm = (DefaultTableModel) vehiculosJTable.getModel();
+
+                    dtm.setRowCount(vehiculos.size());
+
+                    int index = 0;
+
+                    for (Vehiculos vehiculo : vehiculos) {
+
+                        vehiculosJTable.getModel().setValueAt(vehiculo.getId(), index, 0);
+                        vehiculosJTable.getModel().setValueAt(vehiculo.getDescripcion(), index, 1);
+                        vehiculosJTable.getModel().setValueAt(vehiculo.getDisponibilidadTxt(), index, 2);
+                        vehiculosJTable.getModel().setValueAt(String.format("%.2f", vehiculo.getCapacidad_carga()), index, 3);
+                        vehiculosJTable.getModel().setValueAt(vehiculo.getNombre_chofer(), index, 4);
+                        vehiculosJTable.getModel().setValueAt(vehiculo.getCed_chofer(), index, 5);
+
+                        index++;
+                    }
+
+                    responseBody.close();
+
+                }
+            }
+        });
+        
+    }
+    
+    private void loadUsuarios(){
+        
+        Request request = new Request.Builder()
+                .url("https://t-express-rest.herokuapp.com/auth/")
+                .header("auth-token", user.getToken())
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response rspns) throws IOException {
+
+                try ( ResponseBody responseBody = rspns.body()) {
+                    String json = responseBody.string();
+
+                    if (!rspns.isSuccessful()) {
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Ha ocurrido un problema",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        return;
+
+                    }
+
+                    usuarios = new Gson().fromJson(json, new TypeToken<List<Usuario>>() {
+                    }.getType());
+
+                    DefaultTableModel dtm = (DefaultTableModel) usuariosJTable.getModel();
+
+                    dtm.setRowCount(usuarios.size());
+
+                    int index = 0;
+
+                    for (Usuario usuario : usuarios) {
+
+                        usuariosJTable.getModel().setValueAt(usuario.getNombre(), index, 0);
+                        usuariosJTable.getModel().setValueAt(usuario.getCorreo(), index, 1);
+                        usuariosJTable.getModel().setValueAt(usuario.getRole(), index, 2);
+
+                        index++;
+                    }
+
+                    responseBody.close();
+
+                }
+            }
+        });
     }
 }

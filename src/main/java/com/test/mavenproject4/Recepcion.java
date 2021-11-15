@@ -251,7 +251,7 @@ public class Recepcion extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(calcTotalCost, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(totalCostoTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(totalCostoTxt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jSeparator1)
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel10)
@@ -504,8 +504,7 @@ public class Recepcion extends javax.swing.JFrame {
         RequestBody body = RequestBody.create(JSON, json);
         
         Request request = new Request.Builder()
-            //.url("https://t-express-rest.herokuapp.com/encomiendas/agregar")
-            .url("http://localhost:3000/encomiendas/agregar")
+            .url("https://t-express-rest.herokuapp.com/encomiendas/agregar")
             .header("auth-token", user.getToken())
             .post(body)
             .build();
@@ -536,8 +535,6 @@ public class Recepcion extends javax.swing.JFrame {
                     return;
                 }
                 
-                enviarEncomiendaBtn.setEnabled(true);
-                
                 int dialogRes = JOptionPane.showOptionDialog(
                                 null,
                                 "La encomienda se ha guardado correctamente!", 
@@ -548,7 +545,7 @@ public class Recepcion extends javax.swing.JFrame {
                         );
                 
                 if(dialogRes == JOptionPane.OK_OPTION){
-                    //se limpian todos lo campos
+                    limpiarCampos();
                 }
                 
             }
@@ -636,6 +633,26 @@ public class Recepcion extends javax.swing.JFrame {
     
     private void limpiarCampos(){
         
+        clienteEnv = null;
+        clienteRec = null;
+        
+        clientIdTxt.setText(null);
+        clientIdRecTxt.setText(null);
+        
+        verClienteBtn.setEnabled(false);
+        verClienteRecBtn.setEnabled(false);
+        
+        descPaqueteTxt.setText(null);
+        
+        distTxt.setText("0.00 km");
+        
+        diasAproxTxt.setText("0 dia(s)");
+        
+        altaPriorCheck.setSelected(false);
+        
+        pesoTxt.setText("0.00");
+        
+        totalCostoTxt.setText("$0.00");
     }
     /**
      * @param args the command line arguments

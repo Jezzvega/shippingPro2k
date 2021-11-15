@@ -10,11 +10,15 @@ package com.test.mavenproject4;
  */
 public class Asignacion extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Asignacion
-     */
+    Usuario user;
+    
     public Asignacion() {
         initComponents();
+    }
+    
+    public Asignacion(Usuario user) {
+        initComponents();
+        this.user = user;
     }
 
     /**

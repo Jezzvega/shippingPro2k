@@ -242,21 +242,20 @@ public class Autenticacion extends javax.swing.JFrame {
                 usuario = new Gson().fromJson(res.body().string(), Usuario.class);
 
                 switch (usuario.getRole()) {
-                    case "recepcion":
+                    case "Recepcion" -> {
                         Recepcion rec = new Recepcion(usuario);
                         rec.setVisible(true);
+                    }
 
-                        break;
-
-                    case "admin":
+                    case "Administrador" -> {
                         VistaAdministrador adminView = new VistaAdministrador(usuario);
                         adminView.setVisible(true);
-                        break;
+                    }
 
-                    case "test":
-                        Encomiendas_View encomiendas = new Encomiendas_View(usuario);
-                        encomiendas.setVisible(true);
-                        break;
+                    case "Almacen" -> {
+                        Asignacion asignacion = new Asignacion(usuario);
+                        asignacion.setVisible(true);
+                    }
                 }
 
                 cerrarVentana();
