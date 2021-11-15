@@ -90,6 +90,7 @@ public class Recepcion extends javax.swing.JFrame {
         diasAproxTxt = new javax.swing.JLabel();
         enviarEncomiendaBtn = new javax.swing.JButton();
         addClienteBtn = new javax.swing.JButton();
+        encomiendasvBTN = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -319,6 +320,14 @@ public class Recepcion extends javax.swing.JFrame {
             }
         });
 
+        encomiendasvBTN.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        encomiendasvBTN.setText("Ver Encomiendas");
+        encomiendasvBTN.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                encomiendasvBTNActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -333,7 +342,11 @@ public class Recepcion extends javax.swing.JFrame {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addClienteBtn))
-                    .addComponent(enviarEncomiendaBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(encomiendasvBTN, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(enviarEncomiendaBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -353,7 +366,9 @@ public class Recepcion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(enviarEncomiendaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(enviarEncomiendaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                    .addComponent(encomiendasvBTN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -570,6 +585,11 @@ public class Recepcion extends javax.swing.JFrame {
      a.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    private void encomiendasvBTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_encomiendasvBTNActionPerformed
+       Encomiendas_View e = new Encomiendas_View(user);
+       e.setVisible(true);
+    }//GEN-LAST:event_encomiendasvBTNActionPerformed
+
     public void buscarCliente(String id, String tipo) throws Exception {
         
         if(id.isBlank()) {
@@ -716,6 +736,7 @@ public class Recepcion extends javax.swing.JFrame {
     private javax.swing.JTextArea descPaqueteTxt;
     private javax.swing.JLabel diasAproxTxt;
     private javax.swing.JLabel distTxt;
+    private javax.swing.JButton encomiendasvBTN;
     private javax.swing.JButton enviarEncomiendaBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
