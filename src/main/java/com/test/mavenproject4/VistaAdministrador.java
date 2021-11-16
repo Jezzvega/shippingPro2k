@@ -160,8 +160,6 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel22 = new javax.swing.JPanel();
         jButton4 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        ingresoTXTLb = new javax.swing.JLabel();
-        ingresoFiltradoLb = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         jPanel23 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -196,11 +194,21 @@ public class VistaAdministrador extends javax.swing.JFrame {
         jPanel34 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         usuariosJTable = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
+        jLabel32 = new javax.swing.JLabel();
+        clientesProvFiltroCBox1 = new javax.swing.JComboBox<>();
+        jLabel33 = new javax.swing.JLabel();
+        clientesOrdenarPorCBox1 = new javax.swing.JComboBox<>();
+        jPanel27 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        clientesJTable1 = new javax.swing.JTable();
 
         jTextField1.setText("jTextField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("PANEL DE ADMINISTRADOR");
+        setName("financiero"); // NOI18N
         setResizable(false);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -208,7 +216,6 @@ public class VistaAdministrador extends javax.swing.JFrame {
             }
         });
 
-        panelAdmin.setTabPlacement(javax.swing.JTabbedPane.LEFT);
         panelAdmin.setToolTipText("");
         panelAdmin.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 16)); // NOI18N
         panelAdmin.setName("Recibo de paquetes\nEnvío de paquetes\nAdministrar clientes\nAdministrar repartidores\nAdministrar vehículos"); // NOI18N
@@ -218,15 +225,15 @@ public class VistaAdministrador extends javax.swing.JFrame {
             }
         });
 
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "VISTA GENERAL (ÚLTIMOS 30 DÍAS) ", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Yu Gothic UI Semilight", 1, 14))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "ÚLTIMO MES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Yu Gothic UI Semilight", 1, 14))); // NOI18N
         jPanel2.setName(""); // NOI18N
 
         jPanel7.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         jLabel1.setText("Vehículos disponibles");
 
-        vehicDispLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
+        vehicDispLb.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         vehicDispLb.setText("0/0");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
@@ -236,9 +243,9 @@ public class VistaAdministrador extends javax.swing.JFrame {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(vehicDispLb, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(223, Short.MAX_VALUE))
+                    .addComponent(vehicDispLb, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(202, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,11 +259,11 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel4.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 14)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         jLabel4.setText("En Camino");
 
-        enProcesoLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        enProcesoLb.setForeground(new java.awt.Color(0, 153, 0));
+        enProcesoLb.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        enProcesoLb.setForeground(new java.awt.Color(255, 204, 51));
         enProcesoLb.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         enProcesoLb.setText("0");
 
@@ -285,11 +292,11 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
         jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel19.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 14)); // NOI18N
+        jLabel19.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         jLabel19.setText("Recibidas");
 
-        recibidasLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        recibidasLb.setForeground(new java.awt.Color(204, 0, 0));
+        recibidasLb.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        recibidasLb.setForeground(new java.awt.Color(255, 0, 0));
         recibidasLb.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         recibidasLb.setText("0");
 
@@ -318,11 +325,11 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
         jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel21.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 14)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         jLabel21.setText("Entregadas");
 
-        enviadasLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
-        enviadasLb.setForeground(new java.awt.Color(204, 0, 0));
+        enviadasLb.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
+        enviadasLb.setForeground(new java.awt.Color(0, 204, 51));
         enviadasLb.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         enviadasLb.setText("0");
 
@@ -391,21 +398,21 @@ public class VistaAdministrador extends javax.swing.JFrame {
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel6.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 14)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         jLabel6.setText("Ingreso Monetario");
 
-        ingresoMonetarioLb.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
+        ingresoMonetarioLb.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         ingresoMonetarioLb.setForeground(new java.awt.Color(0, 153, 0));
         ingresoMonetarioLb.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         ingresoMonetarioLb.setText("0.00");
 
-        jLabel24.setFont(new java.awt.Font("Montserrat Black", 1, 18)); // NOI18N
+        jLabel24.setFont(new java.awt.Font("Yu Gothic UI Semilight", 1, 18)); // NOI18N
         jLabel24.setForeground(new java.awt.Color(0, 153, 0));
         jLabel24.setText("$");
 
@@ -456,7 +463,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                         .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(209, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -483,17 +490,17 @@ public class VistaAdministrador extends javax.swing.JFrame {
         encomiendasJTable.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
         encomiendasJTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "EMISOR", "RECEPTOR", "ESTADO", "PRIORIDAD", "FECHA RECIBIDO", "TIEMPO ESTIMADO", "COSTO"
+                "EMISOR", "RECEPTOR", "ESTADO", "PRIORIDAD", "FECHA RECIBIDO", "TIEMPO ESTIMADO", "DESCRIPCIÓN", "COSTO"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -510,6 +517,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
             encomiendasJTable.getColumnModel().getColumn(4).setResizable(false);
             encomiendasJTable.getColumnModel().getColumn(5).setResizable(false);
             encomiendasJTable.getColumnModel().getColumn(6).setResizable(false);
+            encomiendasJTable.getColumnModel().getColumn(7).setResizable(false);
         }
 
         jPanel20.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 840, 400));
@@ -548,12 +556,6 @@ public class VistaAdministrador extends javax.swing.JFrame {
             }
         });
 
-        ingresoTXTLb.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
-        ingresoTXTLb.setText("Ingreso Monetario:");
-
-        ingresoFiltradoLb.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
-        ingresoFiltradoLb.setText("$0.00");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -568,11 +570,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
                                 .addGap(10, 10, 10)
                                 .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(20, Short.MAX_VALUE))
+                        .addContainerGap(214, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(ingresoTXTLb)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(ingresoFiltradoLb)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton2)
                         .addGap(48, 48, 48))))
@@ -586,11 +585,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                     .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, 440, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(ingresoTXTLb)
-                        .addComponent(ingresoFiltradoLb)))
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6))
         );
 
@@ -720,7 +715,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel24, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                 .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -869,7 +864,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jPanel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jPanel29, javax.swing.GroupLayout.PREFERRED_SIZE, 880, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 10, Short.MAX_VALUE)))
+                        .addGap(0, 212, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -880,7 +875,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                     .addComponent(jPanel30, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel31, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel29, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE)
+                .addComponent(jPanel29, javax.swing.GroupLayout.DEFAULT_SIZE, 449, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(vehiculosBuscarBtn)
                 .addContainerGap())
@@ -975,7 +970,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel33, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel34, javax.swing.GroupLayout.DEFAULT_SIZE, 890, Short.MAX_VALUE))
+                    .addComponent(jPanel34, javax.swing.GroupLayout.DEFAULT_SIZE, 1092, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel9Layout.setVerticalGroup(
@@ -984,11 +979,107 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel33, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel34, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE)
+                .addComponent(jPanel34, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         panelAdmin.addTab("USUARIOS", jPanel9);
+
+        jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Controles", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+
+        jLabel32.setText("Provincia:");
+
+        clientesProvFiltroCBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todas (por defecto)", "Bocas del Toro", "Chiriquí", "Coclé", "Colón", "Darién", "Herrera", "Los Santos", "Panamá", "Panamá Oeste", "Veraguas" }));
+
+        jLabel33.setText("Ordenar por:");
+
+        clientesOrdenarPorCBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Id (por defecto)", "Nombre", "Provincia" }));
+
+        javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
+        jPanel26.setLayout(jPanel26Layout);
+        jPanel26Layout.setHorizontalGroup(
+            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel26Layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(clientesProvFiltroCBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(68, 68, 68)
+                .addComponent(jLabel33)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(clientesOrdenarPorCBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(21, 21, 21))
+        );
+        jPanel26Layout.setVerticalGroup(
+            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel26Layout.createSequentialGroup()
+                .addGap(3, 3, 3)
+                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel32)
+                        .addComponent(clientesProvFiltroCBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel33)
+                        .addComponent(clientesOrdenarPorCBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+
+        jPanel27.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Lista de Clientes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 1, 12))); // NOI18N
+        jPanel27.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        clientesJTable1.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        clientesJTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "MES", "ENCOMIENDAS RECIBIDAS", "ENCOMIENDAS ENTREGADAS", "INGRESO BRUTO"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        clientesJTable1.setRowHeight(30);
+        jScrollPane4.setViewportView(clientesJTable1);
+        if (clientesJTable1.getColumnModel().getColumnCount() > 0) {
+            clientesJTable1.getColumnModel().getColumn(0).setResizable(false);
+            clientesJTable1.getColumnModel().getColumn(1).setResizable(false);
+            clientesJTable1.getColumnModel().getColumn(2).setResizable(false);
+            clientesJTable1.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        jPanel27.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 880, 370));
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel26, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(198, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jPanel26, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
+                .addComponent(jPanel27, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
+        );
+
+        panelAdmin.addTab("INFORME FINANCIERO", jPanel5);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -1046,6 +1137,9 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 break;
             case 4:
                 loadUsuarios();
+                break;
+            case 5: 
+                loadFinanzas();
                 break;
         }
     }//GEN-LAST:event_panelAdminStateChanged
@@ -1552,15 +1646,16 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JButton buscarClientesBtn;
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JTable clientesJTable;
+    private javax.swing.JTable clientesJTable1;
     private javax.swing.JComboBox<String> clientesOrdenarPorCBox;
+    private javax.swing.JComboBox<String> clientesOrdenarPorCBox1;
     private javax.swing.JComboBox<String> clientesProvFiltroCBox;
+    private javax.swing.JComboBox<String> clientesProvFiltroCBox1;
     private javax.swing.JLabel enProcesoLb;
     private javax.swing.JTable encomiendasJTable;
     private javax.swing.JLabel enviadasLb;
     private javax.swing.JComboBox<String> filtroPorCBox;
-    private javax.swing.JLabel ingresoFiltradoLb;
     private javax.swing.JLabel ingresoMonetarioLb;
-    private javax.swing.JLabel ingresoTXTLb;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
@@ -1572,6 +1667,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
+    private javax.swing.JLabel jLabel32;
+    private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
@@ -1588,6 +1685,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
+    private javax.swing.JPanel jPanel26;
+    private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
@@ -1595,6 +1694,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
@@ -1602,6 +1702,7 @@ public class VistaAdministrador extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTextField jTextField1;
@@ -1712,8 +1813,6 @@ public class VistaAdministrador extends javax.swing.JFrame {
             @Override
             public void onResponse(Call call, Response rspns) throws IOException {
 
-                Double ingresoFiltrado = 0.00;
-
                 try ( ResponseBody responseBody = rspns.body()) {
                     String json = responseBody.string();
 
@@ -1749,14 +1848,11 @@ public class VistaAdministrador extends javax.swing.JFrame {
                         encomiendasJTable.getModel().setValueAt(encomienda.getPrioridadText(), index, 3);
                         encomiendasJTable.getModel().setValueAt(encomienda.getFecha_de_entrada(), index, 4);
                         encomiendasJTable.getModel().setValueAt(encomienda.getTiempoEstTxt(), index, 5);
-                        encomiendasJTable.getModel().setValueAt(String.format("%.2f", encomienda.getCosto()), index, 6);
-
-                        ingresoFiltrado += encomienda.getCosto();
+                        encomiendasJTable.getModel().setValueAt(encomienda.getDescripcion(), index, 6);
+                        encomiendasJTable.getModel().setValueAt(String.format("%.2f", encomienda.getCosto()), index, 7);
 
                         index++;
                     }
-
-                    ingresoFiltradoLb.setText(String.format("$%.2f", ingresoFiltrado));
 
                     responseBody.close();
 
@@ -1955,5 +2051,11 @@ public class VistaAdministrador extends javax.swing.JFrame {
                 }
             }
         });
+    }
+
+    private void loadFinanzas() {
+        
+        
+        
     }
 }
