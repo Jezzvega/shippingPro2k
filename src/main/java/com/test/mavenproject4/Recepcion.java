@@ -507,7 +507,7 @@ public class Recepcion extends javax.swing.JFrame {
         if(descPaquete.isBlank()){
             JOptionPane.showMessageDialog(
                                 null,
-                                "Debe introducir una descripcion del paquete.", 
+                                "Debe introducir una descripción del paquete.", 
                                 "Ha ocurrido un problema",
                                 JOptionPane.ERROR_MESSAGE
                         );

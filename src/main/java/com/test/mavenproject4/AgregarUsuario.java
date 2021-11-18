@@ -189,7 +189,7 @@ public class AgregarUsuario extends javax.swing.JFrame {
         }
         
         if(pass.isBlank()){
-            errorLb.setText("Introduzca la Cotraseña del Usuario.");
+            errorLb.setText("Introduzca la Contraseña del Usuario.");
             return;
         }
         

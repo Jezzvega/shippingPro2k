@@ -1281,8 +1281,8 @@ public class VistaAdministrador extends javax.swing.JFrame {
 
         int dialogRes = JOptionPane.showOptionDialog(
                 null,
-                "El vehiculo se actualizará con los nuevos datos.\n\n¿Desea Continuar?",
-                "Actualizar Vehiculo",
+                "El vehículo se actualizará con los nuevos datos.\n\n¿Desea Continuar?",
+                "Actualizar Vehículo",
                 JOptionPane.OK_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null, options, options[0]

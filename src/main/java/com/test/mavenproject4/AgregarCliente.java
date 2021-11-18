@@ -310,7 +310,7 @@ public class AgregarCliente extends javax.swing.JFrame {
         }
         
         if(ubic_desc.isBlank()){
-            errLb.setText("Introduzca la descripcion de la Ubicación.");
+            errLb.setText("Introduzca la descripción de la Ubicación.");
             return;
         }
         
