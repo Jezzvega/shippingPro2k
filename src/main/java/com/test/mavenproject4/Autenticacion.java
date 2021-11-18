@@ -22,6 +22,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  *
@@ -197,39 +198,48 @@ public class Autenticacion extends javax.swing.JFrame {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException ioe) {
+                System.out.println(ioe.getMessage());
             }
 
             @Override
             public void onResponse(Call call, Response res) throws IOException {
 
-                if (!res.isSuccessful()) {
-                    errorTxt.setText(res.body().string());
-                    accederBtn.setEnabled(true);
-                    pBar.setVisible(false);
-                    jPanel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-                    return;
+                try ( ResponseBody responseBody = res.body()) {
+                    String json = responseBody.string();
+                
+                    if (!res.isSuccessful()) {
+                        errorTxt.setText(json);
+                        accederBtn.setEnabled(true);
+                        pBar.setVisible(false);
+                        jPanel1.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+                        
+                        responseBody.close();
+                        return;
+                    }
+
+                    usuario = new Gson().fromJson(json, Usuario.class);
+
+                    switch (usuario.getRole()) {
+                        case "Recepcion" -> {
+                            Recepcion rec = new Recepcion(usuario);
+                            rec.setVisible(true);
+                        }
+
+                        case "Administrador" -> {
+                            VistaAdministrador adminView = new VistaAdministrador(usuario);
+                            adminView.setVisible(true);
+                        }
+
+                        case "Almacen" -> {
+                            Asignacion asignacion = new Asignacion(usuario);
+                            asignacion.setVisible(true);
+                        }
+                    }
+
+                    responseBody.close();
+                    
+                    cerrarVentana();
                 }
-
-                usuario = new Gson().fromJson(res.body().string(), Usuario.class);
-
-                switch (usuario.getRole()) {
-                    case "Recepcion" -> {
-                        Recepcion rec = new Recepcion(usuario);
-                        rec.setVisible(true);
-                    }
-
-                    case "Administrador" -> {
-                        VistaAdministrador adminView = new VistaAdministrador(usuario);
-                        adminView.setVisible(true);
-                    }
-
-                    case "Almacen" -> {
-                        Asignacion asignacion = new Asignacion(usuario);
-                        asignacion.setVisible(true);
-                    }
-                }
-
-                cerrarVentana();
             }
 
         });

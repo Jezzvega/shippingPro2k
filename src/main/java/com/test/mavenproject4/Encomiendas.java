@@ -22,6 +22,8 @@ public class Encomiendas {
     private float costo;
     private String descripcion;
     private int tiempo_envio;
+    private String cod_vehiculo;
+    private String ubic_prov;
 
     public int getId() {
         return id;
@@ -111,6 +113,18 @@ public class Encomiendas {
         
         return estadoTxt;
     }
+    
+    public String getEstadoAsignacionText(){
+        
+        String estadoTxt = "";
+        
+        switch(estado){
+            case 0 -> estadoTxt = "Sin Asignar";
+            case 1 -> estadoTxt = "Asignada";
+        }
+        
+        return estadoTxt;
+    }
 
     public int getTiempo_envio() {
         return tiempo_envio;
@@ -123,5 +137,20 @@ public class Encomiendas {
     public String getTiempoEstTxt(){
         return String.format("%d dia(s)", this.tiempo_envio);
     }
-    
+
+    public String getCod_vehiculo() {
+        return (cod_vehiculo != null ? cod_vehiculo : "-");
+    }
+
+    public void setCod_vehiculo(String cod_vehiculo) {
+        this.cod_vehiculo = cod_vehiculo;
+    }
+
+    public String getUbic_prov() {
+        return ubic_prov;
+    }
+
+    public void setUbic_prov(String ubic_prov) {
+        this.ubic_prov = ubic_prov;
+    }
 }

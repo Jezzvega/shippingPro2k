@@ -8,6 +8,7 @@ public class Vehiculos {
     private String descripcion;
     private String nombre_chofer;
     private String ced_chofer;
+    private Double carga_asignada;
 
     public String getId() {
         return id;
@@ -59,6 +60,14 @@ public class Vehiculos {
     
     public String getDisponibilidadTxt(){
         return (this.disponibilidad == 0 ? "Disponible" : "Ocupado");
+    }
+
+    public Double getCarga_asignada() {
+        return carga_asignada;
+    }
+
+    public void setCarga_asignada(Double carga_asignada) {
+        this.carga_asignada = carga_asignada;
     }
     
 }

@@ -4,8 +4,23 @@
  */
 package com.test.mavenproject4;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import static com.test.mavenproject4.VistaAdministrador.JSON;
+import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  *
@@ -13,7 +28,11 @@ import javax.swing.ImageIcon;
  */
 public class Asignacion extends javax.swing.JFrame {
 
+    private final OkHttpClient client = new OkHttpClient();
+    public static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     Usuario user;
+    List<Encomiendas> encomiendas;
+    List<Vehiculos> vehiculos;
     
     public Asignacion() {
         initComponents();
@@ -22,10 +41,11 @@ public class Asignacion extends javax.swing.JFrame {
     public Asignacion(Usuario user) {
         initComponents();
         this.user = user;
-           URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
-            // iconURL is null when not found
-    ImageIcon icon = new ImageIcon(iconURL);
-    this.setIconImage(icon.getImage());
+        URL iconURL = getClass().getResource("/ShippingPro2kiconr.png");
+        ImageIcon icon = new ImageIcon(iconURL);
+        this.setIconImage(icon.getImage());
+    
+        loadDatos();
     
     }
 
@@ -38,14 +58,16 @@ public class Asignacion extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        encomiendasTable = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jButton4 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        vehiculosTable = new javax.swing.JTable();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -54,129 +76,491 @@ public class Asignacion extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "PEDIDOS PENDIENTES", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
-        jPanel1.setToolTipText("");
-        jPanel1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
-        jPanel1.setName(""); // NOI18N
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        encomiendasTable.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        encomiendasTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Id", "Remitente", "Destinatario", "Fecha"
+                "FECHA", "ESTADO", "DESCRIPCION", "PESO (lb)", "DESTINO", "VEHICULO ASIGNADO"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 197, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        encomiendasTable.setRowHeight(30);
+        jScrollPane1.setViewportView(encomiendasTable);
+        if (encomiendasTable.getColumnModel().getColumnCount() > 0) {
+            encomiendasTable.getColumnModel().getColumn(0).setResizable(false);
+            encomiendasTable.getColumnModel().getColumn(1).setResizable(false);
+            encomiendasTable.getColumnModel().getColumn(2).setResizable(false);
+            encomiendasTable.getColumnModel().getColumn(3).setResizable(false);
+            encomiendasTable.getColumnModel().getColumn(4).setResizable(false);
+            encomiendasTable.getColumnModel().getColumn(5).setResizable(false);
+        }
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Asignación de conductor & Vehiculos");
-
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Vehiculos disponibles", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 18))); // NOI18N
-
-        jComboBox3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vehiculo 1", "Vehiculo 2", "Vehiculo 3" }));
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(26, Short.MAX_VALUE))
-        );
-
-        jButton4.setText("Recargar");
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setText("Logística de Encomiendas");
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jButton1.setText("Asignar");
+        jButton1.setText("Asignar Encomienda a Vehículo");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        vehiculosTable.setFont(new java.awt.Font("Helvetica Neue", 1, 14)); // NOI18N
+        vehiculosTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "MATRICULA", "DISPONIBILIDAD", "CAPACIDAD DE CARGA (lb)", "CARGA ASIGNADA (lb)", "CONDUCTOR"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        vehiculosTable.setRowHeight(30);
+        jScrollPane2.setViewportView(vehiculosTable);
+        if (vehiculosTable.getColumnModel().getColumnCount() > 0) {
+            vehiculosTable.getColumnModel().getColumn(0).setResizable(false);
+            vehiculosTable.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jButton2.setText("Actualizar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton3.setText("Marcar Disponible");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel2.setText("Vehiculos");
+
+        jButton4.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jButton4.setText("Marcar Ocupado");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 241, Short.MAX_VALUE)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 986, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(97, 97, 97))))
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton4))
+                    .addComponent(jButton2))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(135, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
-
-        jPanel1.getAccessibleContext().setAccessibleName("");
 
         getAccessibleContext().setAccessibleDescription("");
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
      Autenticacion a = new Autenticacion();
      a.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
+        int encomiendaSelect = encomiendasTable.getSelectedRow();
+        int vehiculoSelect = vehiculosTable.getSelectedRow();
+        
+        if(encomiendaSelect < 0){
+            JOptionPane.showMessageDialog(
+                null,
+                "Debe seleccionar una encomienda.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+        }
+        
+        if(vehiculoSelect < 0){
+            JOptionPane.showMessageDialog(
+                null,
+                "Debe seleccionar un vehiculo.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+        }
+        
+        if(encomiendas.get(encomiendaSelect).getEstado() == 1){
+            JOptionPane.showMessageDialog(
+                null,
+                "La encomienda seleccionada ya fue asignada a otro vehiculo.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+        }
+        
+        if(vehiculos.get(vehiculoSelect).getDisponibilidad() == 1){
+            JOptionPane.showMessageDialog(
+                null,
+                "El vehiculo seleccionado se encuentra ocupado.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+        }
+        
+        if(encomiendas.get(encomiendaSelect).getPeso_paquete() > vehiculos.get(vehiculoSelect).getCapacidad_carga()){
+            
+            JOptionPane.showMessageDialog(
+                null,
+                "El peso de este paquete supera la capacidad de carga del vehiculo.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+            
+        }
+        
+        int encomiendaId = encomiendas.get(encomiendaSelect).getId();
+        String matricula = vehiculos.get(vehiculoSelect).getId();
+        
+        Object[] options = {"Asignar", "Cancelar"};
+
+        int dialogRes = JOptionPane.showOptionDialog(
+                null,
+                "La Encomeinda sera asignada al vehiculo " + matricula + ".\n\n¿Desea Continuar?",
+                "Asignar a Vehiculo",
+                JOptionPane.OK_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]
+        );
+
+        if (dialogRes == JOptionPane.OK_OPTION) {
+
+            String json = "{\n"
+                    + "    \"id\": " + encomiendaId + ",\n"
+                    + "    \"cod_vehiculo\": \"" + matricula + "\"\n"
+                    + "}";
+
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url("https://t-express-rest.herokuapp.com/encomiendas/asignacion")
+                    .header("auth-token", user.getToken())
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException ioe) {
+                    System.out.println(ioe.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response rspns) throws IOException {
+
+                    try ( ResponseBody responseBody = rspns.body()) {
+                        String json = responseBody.string();
+
+                        if (!rspns.isSuccessful()) {
+
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    json,
+                                    "Ha ocurrido un problema",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            responseBody.close();
+
+                            return;
+
+                        }
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Asignado",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        loadDatos();
+
+                    }
+                }
+            });
+
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        loadDatos();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        int vehiculoSelect = vehiculosTable.getSelectedRow();
+        
+        if(vehiculoSelect < 0){
+            JOptionPane.showMessageDialog(
+                null,
+                "Debe seleccionar un vehiculo.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+        }
+        
+        if(vehiculos.get(vehiculoSelect).getDisponibilidad() == 0){
+            JOptionPane.showMessageDialog(
+                null,
+                "El vehiculo seleccionado ya se encuentra Disponible.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+        }
+        
+        String matricula = vehiculos.get(vehiculoSelect).getId();
+        
+        Object[] options = {"Cambiar Estado", "Cancelar"};
+
+        int dialogRes = JOptionPane.showOptionDialog(
+                null,
+                "EL vehículo con la matricula " + matricula + " cambiará su estado a Disponible.\n\n¿Desea Continuar?",
+                "Estado de Vehiculo",
+                JOptionPane.OK_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]
+        );
+
+        if (dialogRes == JOptionPane.OK_OPTION) {
+
+            String json = "{\n"
+                    + "    \"cod_vehiculo\": \"" + matricula + "\"\n"
+                    + "}";
+
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url("https://t-express-rest.herokuapp.com/vehiculos/cambiar-estado-disponible")
+                    .header("auth-token", user.getToken())
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException ioe) {
+                    System.out.println(ioe.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response rspns) throws IOException {
+
+                    try ( ResponseBody responseBody = rspns.body()) {
+                        String json = responseBody.string();
+
+                        if (!rspns.isSuccessful()) {
+
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    json,
+                                    "Ha ocurrido un problema",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            responseBody.close();
+
+                            return;
+
+                        }
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Cambio de Estado",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        loadDatos();
+
+                    }
+                }
+            });
+
+        }
+        
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        int vehiculoSelect = vehiculosTable.getSelectedRow();
+        
+        if(vehiculoSelect < 0){
+            JOptionPane.showMessageDialog(
+                null,
+                "Debe seleccionar un vehiculo.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+        }
+        
+        if(vehiculos.get(vehiculoSelect).getDisponibilidad() == 1){
+            JOptionPane.showMessageDialog(
+                null,
+                "El vehiculo seleccionado ya se encuentra Ocupado.",
+                "Ha ocurrido un problema",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            return;
+        }
+        
+        String matricula = vehiculos.get(vehiculoSelect).getId();
+        
+        Object[] options = {"Cambiar Estado", "Cancelar"};
+
+        int dialogRes = JOptionPane.showOptionDialog(
+                null,
+                "EL vehículo con la matricula " + matricula + " cambiará su estado a Ocupado.\n\n¿Desea Continuar?",
+                "Estado de Vehiculo",
+                JOptionPane.OK_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null, options, options[0]
+        );
+
+        if (dialogRes == JOptionPane.OK_OPTION) {
+
+            String json = "{\n"
+                    + "    \"cod_vehiculo\": \"" + matricula + "\"\n"
+                    + "}";
+
+            RequestBody body = RequestBody.create(JSON, json);
+
+            Request request = new Request.Builder()
+                    .url("https://t-express-rest.herokuapp.com/vehiculos/cambiar-estado-ocupado")
+                    .header("auth-token", user.getToken())
+                    .post(body)
+                    .build();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException ioe) {
+                    System.out.println(ioe.getMessage());
+                }
+
+                @Override
+                public void onResponse(Call call, Response rspns) throws IOException {
+
+                    try ( ResponseBody responseBody = rspns.body()) {
+                        String json = responseBody.string();
+
+                        if (!rspns.isSuccessful()) {
+
+                            JOptionPane.showMessageDialog(
+                                    null,
+                                    json,
+                                    "Ha ocurrido un problema",
+                                    JOptionPane.ERROR_MESSAGE
+                            );
+
+                            responseBody.close();
+
+                            return;
+
+                        }
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Cambio de Estado",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        loadDatos();
+
+                    }
+                }
+            });
+
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -214,13 +598,98 @@ public class Asignacion extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable encomiendasTable;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable vehiculosTable;
     // End of variables declaration//GEN-END:variables
+
+    private void loadDatos() {
+        
+        Request request = new Request.Builder()
+                .url("https://t-express-rest.herokuapp.com/encomiendas/asignacion")
+                .header("auth-token", user.getToken())
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException ioe) {
+                System.out.println(ioe.getMessage());
+            }
+
+            @Override
+            public void onResponse(Call call, Response rspns) throws IOException {
+
+                try ( ResponseBody responseBody = rspns.body()) {
+                    String json = responseBody.string();
+
+                    if (!rspns.isSuccessful()) {
+
+                        JOptionPane.showMessageDialog(
+                                null,
+                                json,
+                                "Ha ocurrido un problema",
+                                JOptionPane.ERROR_MESSAGE
+                        );
+
+                        responseBody.close();
+
+                        return;
+
+                    }
+
+                    AsignacionData data = new Gson().fromJson(json, AsignacionData.class);
+                    
+                    encomiendas = data.getEncomiendas();
+                    
+                    DefaultTableModel dtm = (DefaultTableModel) encomiendasTable.getModel();
+
+                    dtm.setRowCount(encomiendas.size());
+
+                    int index = 0;
+
+                    for (Encomiendas encomienda : encomiendas) {
+
+                        encomiendasTable.getModel().setValueAt(encomienda.getFecha_de_entrada(), index, 0);
+                        encomiendasTable.getModel().setValueAt(encomienda.getEstadoAsignacionText(), index, 1);
+                        encomiendasTable.getModel().setValueAt(encomienda.getDescripcion(), index, 2);
+                        encomiendasTable.getModel().setValueAt(encomienda.getPeso_paquete(), index, 3);
+                        encomiendasTable.getModel().setValueAt(encomienda.getUbic_prov(), index, 4);
+                        encomiendasTable.getModel().setValueAt(encomienda.getCod_vehiculo(), index, 5);
+
+                        index++;
+                    }
+                    
+                    vehiculos = data.getVehiculos();
+                    
+                    DefaultTableModel dtm2 = (DefaultTableModel) vehiculosTable.getModel();
+
+                    dtm2.setRowCount(vehiculos.size());
+                    
+                    index = 0;
+                    
+                    for (Vehiculos vehiculo : vehiculos) {
+
+                        vehiculosTable.getModel().setValueAt(vehiculo.getId(), index, 0);
+                        vehiculosTable.getModel().setValueAt(vehiculo.getDisponibilidadTxt(), index, 1);
+                        vehiculosTable.getModel().setValueAt(vehiculo.getCapacidad_carga(), index, 2);
+                        vehiculosTable.getModel().setValueAt(vehiculo.getCarga_asignada(), index, 3);
+                        vehiculosTable.getModel().setValueAt(vehiculo.getNombre_chofer(), index, 4);
+
+                        index++;
+                    }
+
+                    responseBody.close();
+
+                }
+            }
+        });
+        
+    }
 }
