@@ -72,10 +72,10 @@ public class AgregarCliente extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         clientNombreTxt = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        clientTelTxt = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         clientDetaTxt = new javax.swing.JTextArea();
+        clientTelTxt = new javax.swing.JFormattedTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         clientUbicProvCmb = new javax.swing.JComboBox<>();
@@ -110,14 +110,18 @@ public class AgregarCliente extends javax.swing.JFrame {
 
         jLabel4.setText("Teléfono:");
 
-        clientTelTxt.setToolTipText("");
-
         jLabel5.setText("Detalles del Negocio:");
 
         clientDetaTxt.setColumns(20);
         clientDetaTxt.setLineWrap(true);
         clientDetaTxt.setRows(5);
         jScrollPane1.setViewportView(clientDetaTxt);
+
+        try {
+            clientTelTxt.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#########")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,10 +136,10 @@ public class AgregarCliente extends javax.swing.JFrame {
                     .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(clientTelTxt)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(clientIdTxt)
-                    .addComponent(clientNombreTxt, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(clientNombreTxt, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(clientTelTxt))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -151,8 +155,8 @@ public class AgregarCliente extends javax.swing.JFrame {
                     .addComponent(jLabel3))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(clientTelTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(clientTelTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -186,6 +190,11 @@ public class AgregarCliente extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(12, 12, 12)
+                        .addComponent(latLngTxt)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel6)
                             .addComponent(jLabel7))
@@ -195,12 +204,7 @@ public class AgregarCliente extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(clientUbicProvCmb, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jScrollPane2))
-                        .addContainerGap())
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel8)
-                        .addGap(12, 12, 12)
-                        .addComponent(latLngTxt)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -484,7 +488,7 @@ public class AgregarCliente extends javax.swing.JFrame {
     private javax.swing.JTextArea clientDetaTxt;
     private javax.swing.JTextField clientIdTxt;
     private javax.swing.JTextField clientNombreTxt;
-    private javax.swing.JTextField clientTelTxt;
+    private javax.swing.JFormattedTextField clientTelTxt;
     private javax.swing.JTextArea clientUbicDescTxt;
     private javax.swing.JComboBox<String> clientUbicProvCmb;
     private javax.swing.JLabel errLb;
